@@ -62,7 +62,7 @@ If you're using MongoDB Atlas:
 
 4. **Configure the service**
    - **Name**: `demobank` (or your preferred name)
-   - **Runtime**: `Java`
+   - **Runtime**: `Docker`
    - **Build Command**: `./build.sh`
    - **Start Command**: `./start.sh`
    - **Plan**: `Free` (or choose a paid plan for production)
