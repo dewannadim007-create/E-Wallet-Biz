@@ -24,7 +24,8 @@ FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 
 # Copy the built JAR from the build stage
-COPY --from=build /app/target/springboot-app-0.0.1-SNAPSHOT.jar app.jar
+# Using wildcard to handle version changes
+COPY --from=build /app/target/springboot-app-*.jar app.jar
 
 # Expose the port (Render will override with $PORT)
 EXPOSE 8080
