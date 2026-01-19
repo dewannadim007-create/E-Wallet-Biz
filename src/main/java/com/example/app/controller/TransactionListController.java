@@ -13,9 +13,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.time.LocalDateTime;
 
-/**
- * TransactionListController - Admin view all transactions
- */
 @Controller
 public class TransactionListController {
 
@@ -37,7 +34,6 @@ public class TransactionListController {
 
         List<Transaction> filteredList = allTransactions.stream()
                 .filter(t -> {
-                    // 1. Search Filter
                     if (search != null && !search.trim().isEmpty()) {
                         String s = search.toLowerCase();
                         boolean match = (t.getRef() != null && t.getRef().toLowerCase().contains(s)) ||
@@ -48,13 +44,11 @@ public class TransactionListController {
                             return false;
                     }
 
-                    // 2. Type Filter
                     if (type != null && !type.isEmpty() && !type.equalsIgnoreCase("All")) {
                         if (!t.getType().equalsIgnoreCase(type))
                             return false;
                     }
 
-                    // 3. Time Filter
                     if (days != null && !days.isEmpty() && !days.equalsIgnoreCase("All")) {
                         try {
                             long d = Long.parseLong(days);
@@ -64,7 +58,6 @@ public class TransactionListController {
                                     return false;
                             }
                         } catch (Exception e) {
-                            // Ignore
                         }
                     }
                     return true;

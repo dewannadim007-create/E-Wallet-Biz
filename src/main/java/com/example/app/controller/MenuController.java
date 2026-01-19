@@ -6,15 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.http.HttpSession;
 
-/**
- * MenuController - Main navigation menu
- */
 @Controller
 public class MenuController {
 
-    /**
-     * Show menu page
-     */
     @GetMapping("/menu")
     public String showMenuPage(HttpSession session, Model model) {
         if (session.getAttribute("loggedUser") == null) {

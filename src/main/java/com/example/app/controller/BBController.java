@@ -16,9 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
 
-/**
- * BBController - Bank to Bank transfer
- */
 @Controller
 public class BBController {
 
@@ -31,9 +28,6 @@ public class BBController {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    /**
-     * Show bank to bank transfer page
-     */
     @GetMapping("/bb-transfer")
     public String showBBTransferPage(HttpSession session, Model model) {
         User loggedUser = (User) session.getAttribute("loggedUser");
@@ -44,16 +38,12 @@ public class BBController {
 
         model.addAttribute("user", loggedUser);
 
-        // Add available balance (Bank)
         double availableBalance = UserService.getBalanceAccount(loggedUser.getAccount(), mongoTemplate);
         model.addAttribute("availableBalance", availableBalance);
 
         return "bb";
     }
 
-    /**
-     * Bank to Bank transfer
-     */
     @PostMapping("/api/bb-transfer")
     public String transfer(@RequestParam("amount") double amount,
             @RequestParam("receiverAccount") String receiverAccount,
@@ -73,7 +63,6 @@ public class BBController {
         boolean pinVerification = UserService.verifyPin(password, loggedUser.getMobile(), mongoTemplate);
         boolean accountCheck = loggedUser.getAccount().equals(receiverAccount);
 
-        // Check Limits (Linked Bank)
         String currentMonth = LocalDate.now().getMonth().toString();
         String[] monthlyStats = transactionService.getMonthlyAccountExpense(loggedUser, currentMonth);
         String[] dailyStats = transactionService.getDailyAccountExpense(loggedUser);
@@ -96,7 +85,6 @@ public class BBController {
         }
 
         if (haveAccount && remainingBalance > amount && pinVerification && !accountCheck) {
-            // Transfer successful - EXACT SAME LOGIC
             transactionService.balanceTransfer(receiverAccount, amount);
             transactionService.senderBalanceUpdate(loggedUser.getAccount(), amount);
             transactionService.transactionHistory(
@@ -107,15 +95,11 @@ public class BBController {
             redirectAttributes.addFlashAttribute("successMessage", "Transfer Successful");
             return "redirect:/bb-transfer";
         } else {
-            // Transfer failed - EXACT SAME LOGIC
             redirectAttributes.addFlashAttribute("errorMessage", "Please Provide Valid Information");
             return "redirect:/bb-transfer";
         }
     }
 
-    /**
-     * Redirect to send money page
-     */
     @GetMapping("/bb-transfer/to-send-money")
     public String changeToHome() {
         return "redirect:/send-money";

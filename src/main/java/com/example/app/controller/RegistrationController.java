@@ -13,9 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 
-/**
- * RegistrationController - User registration
- */
 @Controller
 public class RegistrationController {
 
@@ -50,7 +47,6 @@ public class RegistrationController {
             check = false;
         }
 
-        // Date validation - EXACT SAME LOGIC
         try {
             LocalDate dob = LocalDate.parse(dobString);
             if (dob.isAfter(LocalDate.now()) || dob.equals(LocalDate.now())) {
@@ -68,13 +64,11 @@ public class RegistrationController {
             check = false;
         }
 
-        // Email validation - EXACT SAME REGEX
         if (email == null || email.isEmpty() ||
                 !email.matches(".*@(gmail\\.com|yahoo\\.com|outlook\\.com|hotmail\\.com)$")) {
             check = false;
         }
 
-        // Password validation - EXACT SAME LOGIC (must be exactly 8)
         if (password != null && !password.isEmpty()) {
             int length = password.length();
             if (length > 8 || length == 7 || length == 6 || length == 5 ||
@@ -84,8 +78,6 @@ public class RegistrationController {
         }
 
         if (check) {
-            // STRICT VERIFICATION LOGIC
-            // 1. Check if the bank account exists
             User existingUser = userService.getUserByAccount(account);
 
             if (existingUser == null) {
@@ -93,17 +85,14 @@ public class RegistrationController {
                 return "redirect:/register";
             }
 
-            // 2. Verify Identity (Name, Mobile, NID, DOB)
             boolean identityMatched = true;
 
             if (!existingUser.getMobile().equals(mobile))
                 identityMatched = false;
             if (!existingUser.getNid().equals(nid))
                 identityMatched = false;
-            // Simple Name Check (Case insensitive)
             if (!existingUser.getName().equalsIgnoreCase(name))
                 identityMatched = false;
-            // DOB Check
             if (existingUser.getDOB() != null && !existingUser.getDOB().equals(dobString))
                 identityMatched = false;
 
@@ -113,21 +102,18 @@ public class RegistrationController {
                 return "redirect:/register";
             }
 
-            // 3. Update User credentials (Email & Password) & Activate
             User userUpdate = new User();
             userUpdate.setAccount(account);
-            userUpdate.setName(existingUser.getName()); // Keep original name
+            userUpdate.setName(existingUser.getName());
             userUpdate.setMobile(existingUser.getMobile());
             userUpdate.setNid(existingUser.getNid());
             userUpdate.setDOB(existingUser.getDOB());
-            userUpdate.setEmail(email); // Update Email
-            userUpdate.setPassword(password); // Update Password
+            userUpdate.setEmail(email);
+            userUpdate.setPassword(password);
 
             boolean isRegistered = userService.registration(userUpdate);
 
             if (isRegistered) {
-                // Ensure wallet balance is initialized if not present (logic inside
-                // registration/createOnlineBankingAccount)
                 UserService.createOnlineBankingAccount(account, mobile,
                         existingUser.getWalletBalance() != null ? existingUser.getWalletBalance() : 0.0, mongoTemplate);
 

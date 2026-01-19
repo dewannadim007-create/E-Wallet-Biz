@@ -23,14 +23,10 @@ public class Utility {
         this.balance = balance;
     }
 
-    // Constructor customized for DataSeeder
     public Utility(String provider, String type, String account) {
         this.provider = provider;
         this.type = type;
-        this.account = account; // Re-purposing 'account' field to store 'Electricity'/'Gas'/'Mobile' category
-                                // tag if needed, OR just leave empty.
-        // Based on the seeder code: new Utility("DESCO", "Prepaid", "Electricity")
-        // So: Provider=DESCO, Type=Prepaid, Account=Electricity (acting as category)
+        this.account = account;
         this.balance = 0.0;
     }
 

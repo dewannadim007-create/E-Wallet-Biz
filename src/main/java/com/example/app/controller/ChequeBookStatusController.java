@@ -15,8 +15,6 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- */
 @Controller
 public class ChequeBookStatusController {
 
@@ -26,9 +24,6 @@ public class ChequeBookStatusController {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    /**
-     * Show cheque book status page
-     */
     @GetMapping("/admin/cheque-status")
     public String showChequeBookStatus(
             @RequestParam(required = false) String search,
@@ -43,11 +38,9 @@ public class ChequeBookStatusController {
 
         List<User> chequeList = UserService.getChequeList(mongoTemplate);
 
-        // Filter Logic
         List<User> filteredList = chequeList.stream()
                 .filter(c -> {
                     boolean match = true;
-                    // Search
                     if (search != null && !search.isEmpty()) {
                         String s = search.toLowerCase();
                         match = (c.getName() != null && c.getName().toLowerCase().contains(s)) ||
@@ -57,7 +50,6 @@ public class ChequeBookStatusController {
                     if (!match)
                         return false;
 
-                    // Status
                     if (status != null && !status.isEmpty() && !status.equals("All")) {
                         if (c.getAccountType() == null || !c.getAccountType().equalsIgnoreCase(status)) {
                             return false;
@@ -80,7 +72,6 @@ public class ChequeBookStatusController {
             RedirectAttributes redirectAttributes) {
 
         if ("delete".equals(action)) {
-            // Soft Delete - Mark as 'Deleted'
             userService.updateChequeStatus(accountId, "Deleted");
             redirectAttributes.addFlashAttribute("successMessage", "Application Marked as Deleted (Archived)");
         } else if ("approve".equals(action)) {
@@ -94,17 +85,11 @@ public class ChequeBookStatusController {
         return "redirect:/admin/cheque-status";
     }
 
-    /**
-     * Redirect to admin home
-     */
     @GetMapping("/admin/cheque-status/to-home")
     public String changeToAdminHome() {
         return "redirect:/admin/home";
     }
 
-    /**
-     * Alternative home redirect
-     */
     @GetMapping("/admin/cheque-status/home")
     public String changeToHome() {
         return "redirect:/admin/home";

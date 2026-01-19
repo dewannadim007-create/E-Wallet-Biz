@@ -12,26 +12,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
 
-/**
- * LoginController - User login
- */
 @Controller
 public class LoginController {
 
     @Autowired
     private UserService userService;
 
-    /**
-     * Show login page
-     */
     @GetMapping("/login")
     public String showLoginPage(Model model) {
         return "login";
     }
 
-    /**
-     * User login authentication
-     */
     @PostMapping("/api/auth/login")
     public String login(@RequestParam("mobile") String mobile,
             @RequestParam("password") String password,
@@ -43,7 +34,6 @@ public class LoginController {
             return "redirect:/login";
         }
 
-        // Check for admin login
         User admin = userService.adminLogin(mobile, password);
         if (admin != null) {
 
@@ -51,7 +41,6 @@ public class LoginController {
             return "redirect:/admin/home";
         }
 
-        // Check for user login
         User user = userService.login(mobile, password);
         if (user != null) {
 
@@ -64,17 +53,11 @@ public class LoginController {
         }
     }
 
-    /**
-     * Redirect to registration
-     */
     @GetMapping("/login/to-registration")
     public String changeToRegistration() {
         return "redirect:/register";
     }
 
-    /**
-     * Back to first page
-     */
     @GetMapping("/login/back")
     public String back() {
         return "redirect:/first";

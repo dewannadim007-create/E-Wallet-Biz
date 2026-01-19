@@ -13,9 +13,6 @@ import jakarta.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * TransactionProfileController - User view their own transactions
- */
 @Controller
 public class TransactionProfileController {
 
@@ -70,7 +67,6 @@ public class TransactionProfileController {
         model.addAttribute("filterType", filterBy);
         model.addAttribute("user", loggedUser);
 
-        // Filter options
         model.addAttribute("filterOptions", new String[] {
                 "utility", "gas bill", "electricity bill", "bank to bank", "bank to wallet",
                 "wallet to wallet", "wallet to bank", "add to wallet", "recharge"

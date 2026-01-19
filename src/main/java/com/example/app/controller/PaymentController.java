@@ -16,9 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
 
-/**
- * PaymentController - Electricity bill payment (DESCO, DPDC)
- */
 @Controller
 public class PaymentController {
 
@@ -34,11 +31,9 @@ public class PaymentController {
         if (loggedUser == null)
             return "redirect:/login";
 
-        
         double availableBalance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         model.addAttribute("availableBalance", availableBalance);
 
-        
         model.addAttribute("providers", new String[] { "DESCO", "DPDC" });
         model.addAttribute("types", new String[] { "Prepaid", "Postpaid" });
         model.addAttribute("user", loggedUser);
@@ -59,7 +54,6 @@ public class PaymentController {
         if (loggedUser == null)
             return "redirect:/login";
 
-        
         double balance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         String providerLower = provider.toLowerCase();
 

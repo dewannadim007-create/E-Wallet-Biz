@@ -10,60 +10,51 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * Transaction entity representing banking transactions
- */
 @Document(collection = "transactions")
 public class Transaction {
 
-    // MongoDB ID (auto-generated)
     @Id
     private String id;
 
-    
     @NotBlank(message = "Receiver is required")
     @Indexed
-    private String receiver; // Receiver account number
+    private String receiver;
 
     @NotBlank(message = "Sender is required")
     @Indexed
-    private String sender; // Sender account number
+    private String sender;
 
-    private String date; // Transaction date (keeping as String for backward compatibility)
+    private String date;
 
     @NotNull(message = "Amount is required")
     private double amount;
 
     @NotBlank(message = "Type is required")
-    private String type; // Transaction type (DEPOSIT, WITHDRAWAL, TRANSFER, etc.)
+    private String type;
 
     @Indexed(unique = true)
-    private String ref; // Reference number (unique transaction ID)
+    private String ref;
 
-    // Additional MongoDB fields
-    private String status; // PENDING, COMPLETED, FAILED
+    private String status;
 
-    private String description; // Transaction description
+    private String description;
 
-    private LocalDateTime transactionDate; // For better date handling in MongoDB
+    private LocalDateTime transactionDate;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
 
-    // Constructors
     public Transaction() {
         this.status = "PENDING";
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
         this.transactionDate = LocalDateTime.now();
 
-        // Auto-generate date string for backward compatibility
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         this.date = this.transactionDate.format(formatter);
     }
 
-    // Constructor matching your original (6 params)
     public Transaction(String receiver, String date, double amount, String type, String sender, String ref) {
         this();
         this.receiver = receiver;
@@ -73,7 +64,6 @@ public class Transaction {
         this.sender = sender;
         this.ref = ref;
 
-        // Try to parse date string to LocalDateTime if provided
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             this.transactionDate = LocalDateTime.parse(date, formatter);
@@ -82,7 +72,6 @@ public class Transaction {
         }
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -114,7 +103,6 @@ public class Transaction {
     public void setDate(String date) {
         this.date = date;
 
-        // Update transactionDate when date is set
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             this.transactionDate = LocalDateTime.parse(date, formatter);
@@ -170,7 +158,6 @@ public class Transaction {
     public void setTransactionDate(LocalDateTime transactionDate) {
         this.transactionDate = transactionDate;
 
-        // Update date string for backward compatibility
         if (transactionDate != null) {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             this.date = transactionDate.format(formatter);

@@ -16,9 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalTime;
 
-/**
- * HomeController - User home/dashboard
- */
+
 @Controller
 public class HomeController {
 
@@ -28,9 +26,7 @@ public class HomeController {
     @Autowired
     private TransactionService transactionService;
 
-    /**
-     * Show home page with greetings and user info
-     */
+   
     @GetMapping("/home")
     public String showHomePage(HttpSession session, Model model) {
         User loggedUser = (User) session.getAttribute("loggedUser");
@@ -60,20 +56,9 @@ public class HomeController {
         model.addAttribute("greetings", greeting);
         model.addAttribute("user", loggedUser);
 
-        // Fetch Recent Transactions
         List<Transaction> allTransactions = transactionService.getTransactionList(loggedUser.getAccount(),
                 loggedUser.getMobile());
-        // Sort by date descending (assuming list might not be sorted or relying on
-        // insertion order)
-        // Since Transaction has no Comparable, and getTransactionList implementation in
-        // service
-        // just returns mongoTemplate.find, we should probably sort it here or query
-        // with sort.
-        // For simplicity: reverse the list if it comes in insertion order (oldest first
-        // commonly)
-        // actually let's assume insertion order for now or try to sort if possible.
-        // Collections.reverse(allTransactions); // REMOVED: Service already returns
-        // DESC (Newest First)
+
 
         List<Transaction> recentTransactions = allTransactions.stream()
                 .limit(5)
@@ -84,9 +69,7 @@ public class HomeController {
         return "home";
     }
 
-    /**
-     * Check wallet balance
-     */
+
     @GetMapping("/api/home/check-wallet")
     public String checkWallet(HttpSession session, RedirectAttributes redirectAttributes) {
         User loggedUser = (User) session.getAttribute("loggedUser");
@@ -101,49 +84,33 @@ public class HomeController {
         return "redirect:/home";
     }
 
-    /**
-     * Redirect to menu
-     */
+
     @GetMapping("/home/to-menu")
     public String changeToMenu() {
         return "redirect:/menu";
     }
 
-    /**
-     * Redirect to utility
-     */
     @GetMapping("/home/to-utility")
     public String changeToUtility() {
         return "redirect:/utility";
     }
 
-    /**
-     * Redirect to send money
-     */
+
     @GetMapping("/home/to-send-money")
     public String changeToSendMoney() {
         return "redirect:/send-money";
     }
 
-    /**
-     * Redirect to e-banking
-     */
     @GetMapping("/home/to-ebanking")
     public String changeToEBanking() {
         return "redirect:/ebanking";
     }
 
-    /**
-     * Redirect to checkbook
-     */
     @GetMapping("/home/to-checkbook")
     public String changeToCheckBook() {
         return "redirect:/checkbook";
     }
 
-    /**
-     * Redirect to statement
-     */
     @GetMapping("/home/to-statement")
     public String changeToStatement() {
         return "redirect:/statement";

@@ -8,56 +8,50 @@ import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 
-/**
- * Branch entity representing bank branches
- */
 @Document(collection = "branches")
 public class Branch {
 
-    // MongoDB ID (auto-generated)
     @Id
     private String id;
 
-    
     @NotBlank(message = "Branch name is required")
     @Indexed
-    private String name; // Branch name
+    private String name;
 
     @NotBlank(message = "Branch type is required")
-    private String type; // Branch type (Main, Sub-branch, ATM, etc.)
+    private String type;
 
     @NotBlank(message = "Location is required")
     @Indexed
-    private String location; // Branch location/address
+    private String location;
 
-    // Additional banking fields
-    private String branchCode; // Unique branch code
+    private String branchCode;
 
-    private String ifscCode; // IFSC code for Indian banks
+    private String ifscCode;
 
-    private String swiftCode; // SWIFT code for international transfers
+    private String swiftCode;
 
-    private String city; // City name
+    private String city;
 
-    private String state; // State name
+    private String state;
 
-    private String country; // Country name (default: Bangladesh)
+    private String country;
 
-    private String zipCode; // Postal/ZIP code
+    private String zipCode;
 
-    private String phoneNumber; // Branch phone number
+    private String phoneNumber;
 
-    private String email; // Branch email
+    private String email;
 
-    private String managerName; // Branch manager name
+    private String managerName;
 
-    private String openingHours; // e.g., "9:00 AM - 5:00 PM"
+    private String openingHours;
 
     private String closingHours;
 
-    private Boolean isActive; // Is branch operational
+    private Boolean isActive;
 
-    private Double latitude; // For GPS/map location
+    private Double latitude;
 
     private Double longitude;
 
@@ -65,7 +59,6 @@ public class Branch {
 
     private LocalDateTime updatedAt;
 
-    // Constructors
     public Branch() {
         this.isActive = true;
         this.country = "Bangladesh";
@@ -73,7 +66,6 @@ public class Branch {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // Constructor matching your original (3 params)
     public Branch(String name, String type, String location) {
         this();
         this.name = name;
@@ -81,14 +73,12 @@ public class Branch {
         this.location = location;
     }
 
-    // Additional constructor with more details
     public Branch(String name, String type, String location, String branchCode, String city) {
         this(name, type, location);
         this.branchCode = branchCode;
         this.city = city;
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -118,7 +108,7 @@ public class Branch {
     }
 
     public void setLocation(String location) {
-        this.location = location; // FIXED: was setting to itself with wrong param name
+        this.location = location;
     }
 
     public String getBranchCode() {

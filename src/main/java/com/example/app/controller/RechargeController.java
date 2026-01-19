@@ -16,9 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
 
-/**
- * RechargeController - Mobile recharge
- */
 @Controller
 public class RechargeController {
 
@@ -34,11 +31,9 @@ public class RechargeController {
         if (loggedUser == null)
             return "redirect:/login";
 
-        
         double availableBalance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         model.addAttribute("availableBalance", availableBalance);
 
-        
         model.addAttribute("operators", new String[] {
                 "Grameenphone", "Airtel", "Banglalink", "Teletalk", "Robi"
         });
@@ -61,7 +56,6 @@ public class RechargeController {
         if (loggedUser == null)
             return "redirect:/login";
 
-        
         if (amountStr == null || amountStr.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Insert Valid Data");
             return "redirect:/recharge";
@@ -71,7 +65,6 @@ public class RechargeController {
         double balance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         String providerLower = operator.toLowerCase();
 
-        
         if (givenAmount < balance &&
                 UserService.verifyPin(password, loggedUser.getMobile(), mongoTemplate) &&
                 givenAmount >= 20 &&
@@ -93,7 +86,6 @@ public class RechargeController {
         }
     }
 
-    
     @GetMapping("/recharge/set-20")
     public String add20(Model model, HttpSession session) {
         model.addAttribute("presetAmount", 20);

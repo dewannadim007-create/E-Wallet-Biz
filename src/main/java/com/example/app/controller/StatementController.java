@@ -15,18 +15,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * StatementController - Handles both Statement (Limits) and History pages
- */
 @Controller
 public class StatementController {
 
     @Autowired
     private TransactionService transactionService;
 
-    // ==========================================
-    // 1. STATEMENT PAGE (Limits & Stats)
-    // ==========================================
     @GetMapping("/statement")
     public String showStatementPage(HttpSession session, Model model) {
         User loggedUser = (User) session.getAttribute("loggedUser");
@@ -35,23 +29,19 @@ public class StatementController {
             return "redirect:/login";
         }
 
-        // Daily wallet expense
         String[] dailyWalletStatement = transactionService.getDailyWalletExpense(loggedUser);
         model.addAttribute("dailyWalletExpense", dailyWalletStatement[0]);
         model.addAttribute("dailyWalletTr", dailyWalletStatement[1]);
 
-        // Daily account expense
         String[] dailyAccountStatement = transactionService.getDailyAccountExpense(loggedUser);
         model.addAttribute("dailyAccountExpense", dailyAccountStatement[0]);
         model.addAttribute("dailyAccountTr", dailyAccountStatement[1]);
 
-        // Monthly wallet expense (current month)
         String currentMonth = LocalDate.now().getMonth().toString();
         String[] monthlyWalletStatement = transactionService.getMonthlyWalletExpense(loggedUser, currentMonth);
         model.addAttribute("monthlyWalletExpense", monthlyWalletStatement[0]);
         model.addAttribute("monthlyWalletTr", monthlyWalletStatement[1]);
 
-        // Monthly account expense (current month)
         String[] monthlyAccountStatement = transactionService.getMonthlyAccountExpense(loggedUser, currentMonth);
         model.addAttribute("monthlyAccountExpense", monthlyAccountStatement[0]);
         model.addAttribute("monthlyAccountTr", monthlyAccountStatement[1]);
@@ -61,9 +51,6 @@ public class StatementController {
         return "statement";
     }
 
-    // ==========================================
-    // 2. HISTORY PAGE (List & Filters)
-    // ==========================================
     @GetMapping("/history")
     public String showHistoryPage(
             @RequestParam(value = "search", required = false) String search,
@@ -83,7 +70,6 @@ public class StatementController {
 
         List<Transaction> filteredTransactions = allTransactions.stream()
                 .filter(t -> {
-                    // Search Filter (Ref, Type, or other party)
                     if (search != null && !search.trim().isEmpty()) {
                         String lowerSearch = search.toLowerCase();
                         String otherParty = t.getSender().equals(loggedUser.getAccount()) ? t.getReceiver()
@@ -98,14 +84,12 @@ public class StatementController {
                         }
                     }
 
-                    // Type Filter
                     if (type != null && !type.isEmpty() && !type.equalsIgnoreCase("All")) {
                         if (!t.getType().equalsIgnoreCase(type)) {
                             return false;
                         }
                     }
 
-                    // Time Filter
                     if (days != null && !days.isEmpty() && !days.equalsIgnoreCase("All")) {
                         try {
                             long d = Long.parseLong(days);
@@ -114,7 +98,6 @@ public class StatementController {
                                 return false;
                             }
                         } catch (NumberFormatException e) {
-                            // Ignore invalid numbers
                         }
                     }
 

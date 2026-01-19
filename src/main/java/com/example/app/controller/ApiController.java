@@ -7,10 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * REST API Controller
- * Handles RESTful API requests and returns JSON responses
- */
 @RestController
 @RequestMapping("/api")
 public class ApiController {

@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.http.HttpSession;
 
-/**
- * UserProfileController - User profile display
- */
+
 @Controller
 public class UserProfileController {
 
@@ -32,12 +30,12 @@ public class UserProfileController {
 
         if (info != null) {
             
-            model.addAttribute("name", info[0]); // name
-            model.addAttribute("mobile", info[1]); // mobile
-            model.addAttribute("account", info[2]); // account
-            model.addAttribute("email", info[3]); // email
-            model.addAttribute("dob", info[4]); // DOB
-            model.addAttribute("nid", info[5]); // NID
+            model.addAttribute("name", info[0]); 
+            model.addAttribute("mobile", info[1]); 
+            model.addAttribute("account", info[2]);
+            model.addAttribute("email", info[3]);
+            model.addAttribute("dob", info[4]); 
+            model.addAttribute("nid", info[5]);
         }
 
         model.addAttribute("user", loggedUser);

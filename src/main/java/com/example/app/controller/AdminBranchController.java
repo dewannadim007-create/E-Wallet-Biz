@@ -20,7 +20,6 @@ public class AdminBranchController {
     @Autowired
     private BranchService branchService;
 
-    // List all branches with optional search and type filter
     @GetMapping
     public String showBranchList(
             @RequestParam(required = false) String search,
@@ -31,20 +30,17 @@ public class AdminBranchController {
 
         List<Branch> branches = branchService.getBranchList();
 
-        // Filter Logic
         if ((search != null && !search.trim().isEmpty()) || (type != null && !type.equals("All") && !type.isEmpty())) {
             final String s = (search != null) ? search.toLowerCase() : "";
 
             branches = branches.stream()
                     .filter(b -> {
-                        // Search Filter
                         boolean matchesSearch = true;
                         if (!s.isEmpty()) {
                             matchesSearch = (b.getName() != null && b.getName().toLowerCase().contains(s)) ||
                                     (b.getLocation() != null && b.getLocation().toLowerCase().contains(s));
                         }
 
-                        // Type Filter
                         boolean matchesType = true;
                         if (type != null && !type.equals("All") && !type.isEmpty()) {
                             matchesType = b.getType() != null && b.getType().equalsIgnoreCase(type);
@@ -62,7 +58,6 @@ public class AdminBranchController {
         return "admin-branches";
     }
 
-    // Show Add Form
     @GetMapping("/add")
     public String showAddBranchForm(HttpSession session, Model model) {
         if (!isAdmin(session))
@@ -73,7 +68,6 @@ public class AdminBranchController {
         return "admin-branch-form";
     }
 
-    // Process Add
     @PostMapping("/add")
     public String addBranch(@ModelAttribute Branch branch, HttpSession session, RedirectAttributes redirectAttributes) {
         if (!isAdmin(session))
@@ -88,7 +82,6 @@ public class AdminBranchController {
         return "redirect:/admin/branches";
     }
 
-    // Show Edit Form
     @GetMapping("/edit/{id}")
     public String showEditBranchForm(@PathVariable("id") String id, HttpSession session, Model model) {
         if (!isAdmin(session))
@@ -103,7 +96,6 @@ public class AdminBranchController {
         return "admin-branch-form";
     }
 
-    // Process Edit
     @PostMapping("/update")
     public String updateBranch(@ModelAttribute Branch branch, HttpSession session,
             RedirectAttributes redirectAttributes) {
@@ -119,7 +111,6 @@ public class AdminBranchController {
         return "redirect:/admin/branches";
     }
 
-    // Delete Branch
     @GetMapping("/delete/{id}")
     public String deleteBranch(@PathVariable("id") String id, HttpSession session,
             RedirectAttributes redirectAttributes) {
@@ -135,7 +126,6 @@ public class AdminBranchController {
         return "redirect:/admin/branches";
     }
 
-    // Helper to check admin role
     private boolean isAdmin(HttpSession session) {
         User loggedUser = (User) session.getAttribute("loggedUser");
         return loggedUser != null && "ADMIN".equals(loggedUser.getUserRole());

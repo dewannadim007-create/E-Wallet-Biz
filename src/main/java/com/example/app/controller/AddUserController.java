@@ -13,8 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 
-/**
- */
 @Controller
 public class AddUserController {
 
@@ -24,17 +22,11 @@ public class AddUserController {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    /**
-     * Show add user page
-     */
     @GetMapping("/admin/add-user")
     public String showAddUserPage(Model model) {
         return "addUser";
     }
 
-    /**
-     * Add new user - EXACT SAME VALIDATION AND LOGIC
-     */
     @PostMapping("/admin/api/add-user")
     public String add(@RequestParam("name") String name,
             @RequestParam("nid") String nid,
@@ -45,7 +37,6 @@ public class AddUserController {
             @RequestParam("password") String password,
             RedirectAttributes redirectAttributes) {
 
-        
         boolean check = true;
 
         if (name == null || name.isEmpty()) {
@@ -56,7 +47,6 @@ public class AddUserController {
             check = false;
         }
 
-        // Date validation - EXACT SAME LOGIC
         try {
             LocalDate dob = LocalDate.parse(dobString);
             if (dob.isAfter(LocalDate.now()) || dob.equals(LocalDate.now())) {
@@ -74,13 +64,11 @@ public class AddUserController {
             check = false;
         }
 
-        // Email validation - EXACT SAME REGEX
         if (email == null || email.isEmpty() ||
                 !email.matches(".*@(gmail\\.com|yahoo\\.com|outlook\\.com|hotmail\\.com)$")) {
             check = false;
         }
 
-        // Password validation - EXACT SAME LOGIC
         if (password != null && !password.isEmpty()) {
             int length = password.length();
             if (length > 8 || length == 7 || length == 6 || length == 5 ||
@@ -89,7 +77,6 @@ public class AddUserController {
             }
         }
 
-        
         if (check) {
             User user = new User(name, mobile, email, password, dobString, account, nid);
 
@@ -118,15 +105,11 @@ public class AddUserController {
                 return "redirect:/admin/add-user";
             }
         } else {
-            // Validation failed
             redirectAttributes.addFlashAttribute("errorMessage", "Please fill all fields correctly");
             return "redirect:/admin/add-user";
         }
     }
 
-    /**
-     * Redirect to admin home
-     */
     @GetMapping("/admin/add-user/to-home")
     public String changeToAdminHome() {
         return "redirect:/admin/home";

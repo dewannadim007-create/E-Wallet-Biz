@@ -16,9 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
 
-/**
- * BWController - Bank to Wallet transfer
- */
 @Controller
 public class BWController {
 
@@ -31,9 +28,6 @@ public class BWController {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    /**
-     * Show bank to wallet transfer page
-     */
     @GetMapping("/bw-transfer")
     public String showBWTransferPage(HttpSession session, Model model) {
         User loggedUser = (User) session.getAttribute("loggedUser");
@@ -44,16 +38,12 @@ public class BWController {
 
         model.addAttribute("user", loggedUser);
 
-        // Add available balance (Bank)
         double availableBalance = UserService.getBalanceAccount(loggedUser.getAccount(), mongoTemplate);
         model.addAttribute("availableBalance", availableBalance);
 
         return "bW";
     }
 
-    /**
-     * Bank to Wallet transfer
-     */
     @PostMapping("/api/bw-transfer")
     public String transfer(@RequestParam("amount") double amount,
             @RequestParam("receiverWallet") String receiverWallet,
@@ -73,7 +63,6 @@ public class BWController {
         boolean pinVerification = UserService.verifyPin(password, loggedUser.getMobile(), mongoTemplate);
         boolean accountCheck = loggedUser.getMobile().equals(receiverWallet);
 
-        // Check Limits (Linked Bank)
         String currentMonth = LocalDate.now().getMonth().toString();
         String[] monthlyStats = transactionService.getMonthlyAccountExpense(loggedUser, currentMonth);
         String[] dailyStats = transactionService.getDailyAccountExpense(loggedUser);
@@ -96,7 +85,6 @@ public class BWController {
         }
 
         if (haveAccount && remainingBalance > amount && pinVerification && !accountCheck) {
-            // Transfer successful - EXACT SAME LOGIC
             transactionService.balanceTransferOnline(receiverWallet, amount);
             transactionService.senderBalanceUpdate(loggedUser.getAccount(), amount);
             transactionService.transactionHistory(
@@ -107,15 +95,11 @@ public class BWController {
             redirectAttributes.addFlashAttribute("successMessage", "Transfer Successful");
             return "redirect:/bw-transfer";
         } else {
-            // Transfer failed - EXACT SAME LOGIC
             redirectAttributes.addFlashAttribute("errorMessage", "Please Provide Valid Information");
             return "redirect:/bw-transfer";
         }
     }
 
-    /**
-     * Redirect to send money page
-     */
     @GetMapping("/bw-transfer/to-send-money")
     public String changeToHome() {
         return "redirect:/send-money";

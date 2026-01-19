@@ -11,37 +11,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- */
 @Controller
 public class BranchController {
 
     @Autowired
     private BranchService branchService;
 
-    /**
-     * Show branch list page
-     */
     @GetMapping("/branch")
     public String showBranchList(Model model) {
-        
+
         List<Branch> branchList = branchService.getBranchList();
 
         model.addAttribute("branches", branchList);
         return "branch";
     }
 
-    /**
-     * Search branches by name, type, or location
-     */
     @GetMapping("/branch/search")
     public String startSearch(@RequestParam("search") String search, Model model) {
 
-        
         String searchLower = search.toLowerCase();
         List<Branch> branchList = branchService.getBranchList();
 
-        // EXACT SAME FILTER LOGIC
         List<Branch> branchFilteredList = branchList.stream()
                 .filter(branch -> branch.getName().toLowerCase().contains(searchLower) ||
                         branch.getType().toLowerCase().contains(searchLower) ||
@@ -53,9 +43,6 @@ public class BranchController {
         return "branch";
     }
 
-    /**
-     * Redirect to first page
-     */
     @GetMapping("/branch/to-first")
     public String changeToFirst() {
         return "redirect:/first";

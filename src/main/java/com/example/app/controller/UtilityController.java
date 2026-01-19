@@ -6,9 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import jakarta.servlet.http.HttpSession;
 
-/**
- * UtilityController - Navigation to utility services
- */
+
 @Controller
 public class UtilityController {
 

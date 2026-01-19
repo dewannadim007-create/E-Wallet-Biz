@@ -8,22 +8,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- 
- */
 @Service
 public class BranchService {
 
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    /**
-     * Get list of all branches
-     */
     public List<Branch> getBranchList() {
         List<Branch> branchList = new ArrayList<>();
         try {
-            // MongoDB equivalent: find all branches
             branchList = mongoTemplate.findAll(Branch.class);
         } catch (Exception ex) {
             ex.printStackTrace();

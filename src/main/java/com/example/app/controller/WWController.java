@@ -16,9 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
 
-/**
- * WWController - Wallet to Wallet transfer
- */
 @Controller
 public class WWController {
 
@@ -41,7 +38,7 @@ public class WWController {
 
         model.addAttribute("user", loggedUser);
 
-        // Add available balance (Wallet)
+       
         double availableBalance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         model.addAttribute("availableBalance", availableBalance);
 

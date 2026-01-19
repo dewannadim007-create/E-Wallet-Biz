@@ -21,18 +21,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- */
 @Controller
 public class CheckBookController {
 
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    /**
-     * Show checkbook application page
-     * Renamed from checkBook to chequeBook
-     */
     @GetMapping("/chequebook")
     public String showCheckBookPage(HttpSession session, Model model) {
         User loggedUser = (User) session.getAttribute("loggedUser");
@@ -41,19 +35,15 @@ public class CheckBookController {
             return "redirect:/login";
         }
 
-        
         model.addAttribute("name", loggedUser.getName());
         model.addAttribute("account", loggedUser.getAccount());
         model.addAttribute("mobile", loggedUser.getMobile());
         model.addAttribute("user", loggedUser);
 
-        
         model.addAttribute("pageOptions", new Integer[] { 10, 20, 50 });
 
-        
         model.addAttribute("checkNumberOptions", new Integer[] { 1, 2 });
 
-        // FETCH HISTORY (New Feature)
         try {
             Query query = new Query(Criteria.where("account").is(loggedUser.getAccount()));
             List<Document> historyDocs = mongoTemplate.find(query, Document.class, "cheque");
@@ -76,9 +66,6 @@ public class CheckBookController {
         return "chequeBook";
     }
 
-    /**
-     * Apply for cheque book
-     */
     @PostMapping("/api/chequebook/apply")
     public String apply(@RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "checkNumber", required = false) Integer checkNumber,
@@ -92,38 +79,30 @@ public class CheckBookController {
             return "redirect:/login";
         }
 
-        
         if (page == null || checkNumber == null || password == null || password.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Please fill all fields");
             return "redirect:/chequebook";
         }
 
-        
         String applyDate = String.valueOf(LocalDate.now());
         String account = loggedUser.getAccount();
 
         if (UserService.verifyPin(password, loggedUser.getMobile(), mongoTemplate)) {
             if (!UserService.lastApplied(account, mongoTemplate)) {
-                // Apply successful - EXACT SAME LOGIC
                 UserService.chequeApply(account, applyDate, page, checkNumber,
                         loggedUser.getName(), mongoTemplate);
                 redirectAttributes.addFlashAttribute("successMessage", "Success");
                 return "redirect:/chequebook";
             } else {
-                // Already applied - EXACT SAME LOGIC
                 redirectAttributes.addFlashAttribute("errorMessage", "Already Applied");
                 return "redirect:/chequebook";
             }
         } else {
-            // Invalid password - EXACT SAME LOGIC
             redirectAttributes.addFlashAttribute("errorMessage", "Invalid Password");
             return "redirect:/chequebook";
         }
     }
 
-    /**
-     * Redirect to home
-     */
     @GetMapping("/chequebook/to-home")
     public String changeToHome() {
         return "redirect:/home";
