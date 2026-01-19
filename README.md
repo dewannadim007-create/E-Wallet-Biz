@@ -91,11 +91,14 @@ springboot-app/
 
 ## 🔒 Security
 
-Default credentials (for development only):
-- **Username**: admin
-- **Password**: admin123
+Authentication is configured via environment variables:
+- **Username**: Set via `SPRING_SECURITY_USER_NAME` environment variable
+- **Password**: Set via `SPRING_SECURITY_USER_PASSWORD` environment variable
 
-⚠️ **Important**: Change these credentials before deploying to production!
+⚠️ **Important**: 
+- Never commit credentials to version control
+- Use strong passwords in production
+- Set these environment variables before running the application
 
 ## 🛠️ Development
 
