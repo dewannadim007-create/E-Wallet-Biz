@@ -1,0 +1,17 @@
+services:
+  # Web Service - Spring Boot Application
+  - type: web
+    name: e-wallet-biz
+    runtime: docker
+    plan: free  # Change to 'starter' or other plans as needed
+    branch: main  # Change to your default branch if different
+    envVars:
+      - key: MONGODB_URI
+        sync: false  # Set this manually in Render dashboard for security
+      - key: JAVA_OPTS
+        value: "-Xmx512m -Xms256m"
+      - key: SPRING_PROFILES_ACTIVE
+        value: "prod"
+    healthCheckPath: /actuator/health
+    # Render automatically sets the PORT environment variable
+    # Your application will use it via ${PORT:8080} in application.properties

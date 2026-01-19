@@ -72,6 +72,12 @@
 
         <!-- ===== DEVELOPER TOOLS ===== -->
         
+        <!-- Spring Boot Actuator (Health checks and monitoring) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+        
         <!-- Spring Boot DevTools (Auto-restart, LiveReload) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

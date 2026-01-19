@@ -124,6 +124,14 @@ Run the JAR:
 java -jar target/springboot-app-0.0.1-SNAPSHOT.jar
 ```
 
+## 🚀 Deployment to Render
+
+This application is ready for deployment on Render with Docker. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed instructions on:
+- Setting up MongoDB Atlas
+- Deploying with Docker on Render
+- Configuring environment variables
+- Troubleshooting common issues
+
 ## 📚 Technology Stack Summary
 
 | Category | Technology | Purpose |
