@@ -10,13 +10,9 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
-/**
- * User entity representing a bank customer
- */
 @Document(collection = "users")
 public class User {
 
-    // MongoDB ID (auto-generated)
     @Id
     private String id;
 
@@ -36,26 +32,25 @@ public class User {
     @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 
-    private String DOB; // Date of Birth
+    private String DOB;
 
     @Indexed(unique = true)
-    private String account; // Account number
+    private String account;
 
     @Indexed(unique = true)
-    private String nid; // National ID
+    private String nid;
 
-    private String image; // Profile image path/URL
+    private String image;
 
     private String address;
 
-    // Additional banking fields
-    private Double balance; // Bank Account Balance (Physical Bank)
+    private Double balance;
 
-    private Double walletBalance; // Online Wallet Balance (App)
+    private Double walletBalance;
 
-    private String accountType; // SAVINGS, CURRENT, etc.
+    private String accountType;
 
-    private String userRole; // USER, ADMIN
+    private String userRole;
 
     private Boolean isActive;
 
@@ -63,7 +58,6 @@ public class User {
 
     private LocalDateTime updatedAt;
 
-    // Constructors
     public User() {
         this.balance = 0.0;
         this.walletBalance = 0.0;
@@ -73,7 +67,6 @@ public class User {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // Constructor matching your original (6 params)
     public User(String name, String mobile, String email, String DOB, String account, String nid) {
         this();
         this.name = name;
@@ -84,7 +77,6 @@ public class User {
         this.nid = nid;
     }
 
-    // Constructor matching your original (7 params with password)
     public User(String name, String mobile, String email, String password, String DOB, String account, String nid) {
         this();
         this.name = name;
@@ -96,7 +88,6 @@ public class User {
         this.nid = nid;
     }
 
-    // Constructor for cheque table
     public User(String name, String id, String email, String address, String nid) {
         this();
         this.name = name;
@@ -106,7 +97,6 @@ public class User {
         this.nid = nid;
     }
 
-    // Getters and Setters
     public String getId() {
         return id;
     }

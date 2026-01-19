@@ -11,8 +11,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- */
 @Service
 public class UserService {
 
@@ -22,9 +20,6 @@ public class UserService {
     @Autowired
     private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
-    /**
-     * Register new user
-     */
     public boolean registration(User user) {
         try {
             if (user != null) {
@@ -38,7 +33,6 @@ public class UserService {
                     existingUser.setNid(user.getNid());
                     existingUser.setDOB(user.getDOB());
 
-                    // Secure Password Hashing
                     existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
                     existingUser.setIsActive(true);
@@ -47,7 +41,6 @@ public class UserService {
                     mongoTemplate.save(existingUser);
                     return true;
                 } else {
-                    // Secure Password Hashing
                     user.setPassword(passwordEncoder.encode(user.getPassword()));
                     mongoTemplate.insert(user);
                     return true;
@@ -59,18 +52,12 @@ public class UserService {
         return false;
     }
 
-    /**
-     * User login
-     */
     public User login(String mobile, String password) {
         try {
             Query query = new Query(Criteria.where("mobile").is(mobile));
             User user = mongoTemplate.findOne(query, User.class);
 
             if (user != null) {
-                // Check password match (works for both BCrypt and potentially plain text if we
-                // wanted,
-                // but strictly BCrypt now)
                 if (passwordEncoder.matches(password, user.getPassword())) {
                     return user;
                 }
@@ -81,14 +68,9 @@ public class UserService {
         return null;
     }
 
-    /**
-     * Delete user
-     */
     public User deleteUser(String mobile) {
         try {
             Query query = new Query(Criteria.where("mobile").is(mobile));
-            // In older spring data versions remove returns void or DeleteResult,
-            // but the original code had this returning null anyway.
             mongoTemplate.remove(query, User.class);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -96,9 +78,6 @@ public class UserService {
         return null;
     }
 
-    /**
-     * Admin login
-     */
     public User adminLogin(String mobile, String password) {
         try {
             Query query = new Query(Criteria.where("mobile").is(mobile).and("userRole").is("ADMIN"));
@@ -115,11 +94,6 @@ public class UserService {
         return null;
     }
 
-    // ... (Keep intermediate methods same) ...
-
-    /**
-     * Change user password
-     */
     public boolean changePassword(String mobile, String newPassword) {
         try {
             String encryptedPassword = passwordEncoder.encode(newPassword);
@@ -134,18 +108,6 @@ public class UserService {
         return false;
     }
 
-    // Non-static wrapper for changePassword to allow internal encryption call if
-    // needed,
-    // or just update the static one to use an instance if we want to use the
-    // helper.
-    // For now, making the helper static or instantiating service is tricky with the
-    // mix.
-    // Let's make the helper static for simplicity in this context.
-
-    /**
-     * Check if bank account exists
-     * Note: Assuming account stored in User model
-     */
     public boolean checkAccount(String account) {
         try {
             Query query = new Query(Criteria.where("account").is(account));
@@ -160,9 +122,6 @@ public class UserService {
         return false;
     }
 
-    /**
-     * Get user by account number
-     */
     public User getUserByAccount(String account) {
         try {
             Query query = new Query(Criteria.where("account").is(account));
@@ -173,10 +132,6 @@ public class UserService {
         }
     }
 
-    /**
-     * Check if online wallet account exists
-     * Note: Assuming wallet stored in User model
-     */
     public boolean checkAccountOnline(String mobile) {
         try {
             Query query = new Query(Criteria.where("mobile").is(mobile));
@@ -191,9 +146,6 @@ public class UserService {
         return false;
     }
 
-    /**
-     * Get user information
-     */
     public static String[] userInfo(String mobile, MongoTemplate mongoTemplate) {
         String[] info = new String[6];
         try {
@@ -215,9 +167,6 @@ public class UserService {
         return null;
     }
 
-    /**
-     * Check if account exists for mobile
-     */
     public static boolean existingAccount(String mobile, String account, MongoTemplate mongoTemplate) {
         try {
             Query query = new Query(Criteria.where("mobile").is(mobile));
@@ -232,9 +181,6 @@ public class UserService {
         return false;
     }
 
-    /**
-     * Change user password
-     */
     public static boolean changePassword(String mobile, String newPassword, MongoTemplate mongoTemplate) {
         try {
             org.springframework.security.crypto.password.PasswordEncoder encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
@@ -250,34 +196,24 @@ public class UserService {
         return false;
     }
 
-    /**
-     * Create online banking account (wallet)
-     * Note: Assuming wallet fields stored in User model
-     */
     public static void createOnlineBankingAccount(String account, String mobile, double balance,
             MongoTemplate mongoTemplate) {
         try {
-            // Update existing user or create wallet entry
             Query query = new Query(Criteria.where("mobile").is(mobile));
-            Update update = new Update().set("account", account).set("walletBalance", balance); // FIXED:
-                                                                                                // Using
-                                                                                                // walletBalance
+            Update update = new Update().set("account", account).set("walletBalance", balance);
             mongoTemplate.updateFirst(query, update, User.class);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    /**
-     * Get balance from bank account
-     */
     public static double getBalanceAccount(String account, MongoTemplate mongoTemplate) {
         try {
             Query query = new Query(Criteria.where("account").is(account));
             User user = mongoTemplate.findOne(query, User.class);
 
             if (user != null && user.getBalance() != null) {
-                return user.getBalance(); // FIXED: Uses bank "balance"
+                return user.getBalance();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -285,21 +221,17 @@ public class UserService {
         return 0;
     }
 
-    // Non-static version for autowired use
     public double getBalanceAccount(String account) {
         return getBalanceAccount(account, mongoTemplate);
     }
 
-    /**
-     * Get balance from online wallet
-     */
     public static double getBalanceOnline(String wallet, MongoTemplate mongoTemplate) {
         try {
             Query query = new Query(Criteria.where("mobile").is(wallet));
             User user = mongoTemplate.findOne(query, User.class);
 
             if (user != null && user.getWalletBalance() != null) {
-                return user.getWalletBalance(); // FIXED: Uses "walletBalance"
+                return user.getWalletBalance();
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -307,15 +239,9 @@ public class UserService {
         return 0;
     }
 
-    // Non-static version for autowired use
     public double getBalanceOnline(String wallet) {
         return getBalanceOnline(wallet, mongoTemplate);
     }
-
-    /**
-     * Verify user PIN/password
-     * Note: Requires current logged user - needs session management
-     */
 
     public static boolean verifyPin(String password, String mobile, MongoTemplate mongoTemplate) {
         try {
@@ -323,7 +249,6 @@ public class UserService {
             User user = mongoTemplate.findOne(query, User.class);
 
             if (user != null) {
-                // Use BCrypt to verify
                 org.springframework.security.crypto.password.PasswordEncoder encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
                 return encoder.matches(password, user.getPassword());
             }
@@ -333,22 +258,16 @@ public class UserService {
         return false;
     }
 
-    /**
-     * Apply for cheque book
-     * Note: You'll need to create a Cheque model
-     */
     public static void chequeApply(String account, String applied, int page, int chequeBook, String name,
             MongoTemplate mongoTemplate) {
         try {
-            // Create cheque document
             org.bson.Document cheque = new org.bson.Document();
             cheque.append("account", account);
             cheque.append("page", page);
             cheque.append("chequeBook", chequeBook);
             cheque.append("applied", applied);
             cheque.append("name", name);
-            cheque.append("status", "Pending"); // Default
-                                                // status
+            cheque.append("status", "Pending");
 
             mongoTemplate.insert(cheque, "cheque");
         } catch (Exception ex) {
@@ -356,9 +275,6 @@ public class UserService {
         }
     }
 
-    /**
-     * Check if user has previous cheque application
-     */
     public static boolean lastApplied(String account, MongoTemplate mongoTemplate) {
         try {
             Query query = new Query(Criteria.where("account").is(account));
@@ -374,9 +290,6 @@ public class UserService {
         return false;
     }
 
-    /**
-     * Get list of all users
-     */
     public static List<User> getUserList(MongoTemplate mongoTemplate) {
         List<User> userList = new ArrayList<>();
         try {
@@ -387,15 +300,10 @@ public class UserService {
         return userList;
     }
 
-    // Non-static version
     public List<User> getUserList() {
         return getUserList(mongoTemplate);
     }
 
-    /**
-     * Get list of cheque applications
-     * Note: Returns User objects for compatibility
-     */
     public static List<User> getChequeList(MongoTemplate mongoTemplate) {
         List<User> userList = new ArrayList<>();
         try {
@@ -410,18 +318,7 @@ public class UserService {
                 String applied = cheque.getString("applied");
                 String status = cheque.getString("status");
                 if (status == null)
-                    status = "Pending"; // Default
-                                        // if
-                                        // missing
-
-                // MAPPING TO USER MODEL (Legacy Logic preserved as requested)
-                // Name -> Name
-                // Account -> ID (Note: User.id is usually mongoID, but here we use it for
-                // account to display)
-                // Page -> NID
-                // Quantity -> Email
-                // Date -> Address (Using address field for date)
-                // Status -> AccountType (Using unused field for status)
+                    status = "Pending";
 
                 User user = new User();
                 user.setName(name);
@@ -429,9 +326,7 @@ public class UserService {
                 user.setNid(page);
                 user.setEmail(quantity);
                 user.setAddress(applied);
-                user.setAccountType(status); // Storing
-                                             // status
-                                             // here
+                user.setAccountType(status);
 
                 userList.add(user);
             }
@@ -441,9 +336,6 @@ public class UserService {
         return userList;
     }
 
-    /**
-     * Delete cheque application
-     */
     public User deleteCheque(String account) {
         try {
             Query query = new Query(Criteria.where("account").is(account));
@@ -454,9 +346,6 @@ public class UserService {
         return null;
     }
 
-    /**
-     * Update cheque application status
-     */
     public void updateChequeStatus(String account, String status) {
         try {
             Query query = new Query(Criteria.where("account").is(account));

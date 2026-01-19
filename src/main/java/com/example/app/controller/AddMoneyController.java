@@ -16,8 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
 
-/**
- */
 @Controller
 public class AddMoneyController {
 
@@ -30,9 +28,6 @@ public class AddMoneyController {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    /**
-     * Show add money page with current balance
-     */
     @GetMapping("/add-money")
     public String showAddMoneyPage(HttpSession session, Model model) {
         User loggedUser = (User) session.getAttribute("loggedUser");
@@ -41,8 +36,6 @@ public class AddMoneyController {
             return "redirect:/login";
         }
 
-        
-        // ৳"+UserService.getBalanceAccount(...));
         double balance = UserService.getBalanceAccount(loggedUser.getAccount(), mongoTemplate);
         model.addAttribute("balance", balance);
         model.addAttribute("user", loggedUser);
@@ -50,9 +43,6 @@ public class AddMoneyController {
         return "addMoney";
     }
 
-    /**
-     * Transfer money from bank account to wallet
-     */
     @PostMapping("/api/add-money")
     public String transfer(@RequestParam("amount") double amount,
             @RequestParam("password") String password,
@@ -65,13 +55,11 @@ public class AddMoneyController {
             return "redirect:/login";
         }
 
-        
         boolean haveAccount = userService.checkAccountOnline(loggedUser.getMobile());
         double senderBalance = UserService.getBalanceAccount(loggedUser.getAccount(), mongoTemplate);
         double remainingBalance = senderBalance - amount - 1000;
         boolean pinVerification = UserService.verifyPin(password, loggedUser.getMobile(), mongoTemplate);
 
-        // Check Limits (Linked Bank)
         String currentMonth = LocalDate.now().getMonth().toString();
         String[] monthlyStats = transactionService.getMonthlyAccountExpense(loggedUser, currentMonth);
         String[] dailyStats = transactionService.getDailyAccountExpense(loggedUser);
@@ -94,7 +82,6 @@ public class AddMoneyController {
         }
 
         if (haveAccount && remainingBalance > amount && pinVerification) {
-            // Transfer successful - EXACT SAME LOGIC
             transactionService.balanceTransferOnline(loggedUser.getMobile(), amount);
             transactionService.senderBalanceUpdate(loggedUser.getAccount(), amount);
             transactionService.transactionHistory(
@@ -105,15 +92,11 @@ public class AddMoneyController {
             redirectAttributes.addFlashAttribute("successMessage", "Transfer Successful");
             return "redirect:/add-money";
         } else {
-            // Transfer failed - EXACT SAME LOGIC
             redirectAttributes.addFlashAttribute("errorMessage", "Please Provide Valid Information");
             return "redirect:/add-money";
         }
     }
 
-    /**
-     * Redirect to eBanking page
-     */
     @GetMapping("/add-money/to-ebanking")
     public String changeToEBanking() {
         return "redirect:/ebanking";

@@ -15,9 +15,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * TransactionService - Handles all transaction related operations
- */
 @Service
 public class TransactionService {
 
@@ -27,17 +24,11 @@ public class TransactionService {
     @Autowired
     private UserService userService;
 
-    // Helper method removed - passing User explicitly instead
-
-    /**
-     * Transfer balance to receiver account
-     */
     public void balanceTransfer(String receiverAccount, double amount) {
         try {
             double receiverBalance = userService.getBalanceAccount(receiverAccount);
             double finalBalance = receiverBalance + amount;
 
-            // MongoDB update
             Query query = new Query(Criteria.where("account").is(receiverAccount));
             Update update = new Update().set("balance", finalBalance);
             mongoTemplate.updateFirst(query, update, User.class);
@@ -46,26 +37,19 @@ public class TransactionService {
         }
     }
 
-    /**
-     * Transfer balance to online wallet (mobile)
-     */
     public void balanceTransferOnline(String receiverWallet, double amount) {
         try {
             double receiverBalance = userService.getBalanceOnline(receiverWallet);
             double finalBalance = receiverBalance + amount;
 
-            // MongoDB update
             Query query = new Query(Criteria.where("mobile").is(receiverWallet));
-            Update update = new Update().set("walletBalance", finalBalance); // FIXED: Update walletBalance
+            Update update = new Update().set("walletBalance", finalBalance);
             mongoTemplate.updateFirst(query, update, User.class);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    /**
-     * Update sender balance after transfer
-     */
     public void senderBalanceUpdate(String account, double amount) {
         try {
             if (account == null)
@@ -74,26 +58,21 @@ public class TransactionService {
             double senderBalance = userService.getBalanceAccount(account);
             double finalBalance = senderBalance - amount;
 
-            // MongoDB update
             Query query = new Query(Criteria.where("account").is(account));
-            Update update = new Update().set("balance", finalBalance); // Correct: Bank balance
+            Update update = new Update().set("balance", finalBalance);
             mongoTemplate.updateFirst(query, update, User.class);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    /**
-     * Update sender online wallet balance
-     */
     public void senderBalanceUpdateOnline(String mobile, double amount) {
         try {
             double senderBalance = userService.getBalanceOnline(mobile);
             double finalBalance = senderBalance - amount;
 
-            // MongoDB update
             Query query = new Query(Criteria.where("mobile").is(mobile));
-            Update update = new Update().set("walletBalance", finalBalance); // FIXED: Update walletBalance
+            Update update = new Update().set("walletBalance", finalBalance);
             mongoTemplate.updateFirst(query, update, User.class);
 
         } catch (Exception ex) {
@@ -101,21 +80,15 @@ public class TransactionService {
         }
     }
 
-    /**
-     * Check if utility account exists
-     */
     public boolean utilityAccountCheck(String provider, String account, String type) {
         try {
-            // Flexible check: search by account first
             Query query = new Query(Criteria.where("account").is(account));
             Utility utility = mongoTemplate.findOne(query, Utility.class);
 
             if (utility != null) {
-                // Check provider (case-insensitive)
                 boolean providerMatch = utility.getProvider() != null &&
                         utility.getProvider().equalsIgnoreCase(provider);
 
-                // Check type (case-insensitive)
                 boolean typeMatch = utility.getType() != null &&
                         utility.getType().equalsIgnoreCase(type);
 
@@ -127,16 +100,12 @@ public class TransactionService {
         return false;
     }
 
-    /**
-     * Check utility account (Provider and Account only - for Gas)
-     */
     public boolean utilityAccountCheck(String provider, String account) {
         try {
             Query query = new Query(Criteria.where("account").is(account));
             Utility utility = mongoTemplate.findOne(query, Utility.class);
 
             if (utility != null) {
-                // Check provider (case-insensitive)
                 return utility.getProvider() != null &&
                         utility.getProvider().equalsIgnoreCase(provider);
             }
@@ -146,12 +115,8 @@ public class TransactionService {
         return false;
     }
 
-    /**
-     * Check utility bill balance
-     */
     public double utilityBillCheck(String account, String provider, String type) {
         try {
-            // Less strict query: just find by account, then return balance if it exists
             Query query = new Query(Criteria.where("account").is(account));
             Utility utility = mongoTemplate.findOne(query, Utility.class);
 
@@ -164,9 +129,6 @@ public class TransactionService {
         return 0;
     }
 
-    /**
-     * Pay utility bill
-     */
     public void utilityBillPay(String account, String provider, String type, double amount) {
         try {
             Query query = new Query(Criteria.where("account").is(account));
@@ -184,9 +146,6 @@ public class TransactionService {
         }
     }
 
-    /**
-     * Save transaction to history
-     */
     public boolean transactionHistory(Transaction transaction) {
         try {
             if (transaction != null) {
@@ -199,10 +158,6 @@ public class TransactionService {
         return false;
     }
 
-    /**
-     * Get transaction list for specific account OR mobile (Sender OR Receiver)
-     * Queries for matches on either Account ID or Mobile Number
-     */
     public List<Transaction> getTransactionList(String account, String mobile) {
         List<Transaction> transactionList = new ArrayList<>();
         try {
@@ -222,7 +177,6 @@ public class TransactionService {
 
             Criteria criteria = new Criteria().orOperator(verifyList.toArray(new Criteria[0]));
             Query query = new Query(criteria);
-            // Sort by createdAt descending (newest first)
             query.with(org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.DESC,
                     "createdAt"));
 
@@ -233,16 +187,10 @@ public class TransactionService {
         return transactionList;
     }
 
-    /**
-     * Get transaction list for specific account (Sender OR Receiver)
-     */
     public List<Transaction> getTransactionList(String account) {
         return getTransactionList(account, null);
     }
 
-    /**
-     * Get all transactions
-     */
     public List<Transaction> getAllTransactionList() {
         List<Transaction> transactionList = new ArrayList<>();
         try {
@@ -253,9 +201,6 @@ public class TransactionService {
         return transactionList;
     }
 
-    /**
-     * Get monthly wallet expense
-     */
     public String[] getMonthlyWalletExpense(User loggedUser, String monthName) {
         String[] info = new String[2];
         double monthlyExpense = 0;
@@ -265,8 +210,6 @@ public class TransactionService {
             if (loggedUser == null)
                 return info;
 
-            // MongoDB query - filter by month
-            // Extract month from LocalDateTime and match monthName
             List<Transaction> transactions = mongoTemplate.findAll(Transaction.class);
 
             DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM");
@@ -274,7 +217,6 @@ public class TransactionService {
             for (Transaction txn : transactions) {
                 if (txn.getTransactionDate() != null) {
                     boolean isSender = false;
-                    // Check if user is sender by Account OR Mobile
                     if (txn.getSender().equals(loggedUser.getAccount()) ||
                             txn.getSender().equals(loggedUser.getMobile())) {
                         isSender = true;
@@ -303,9 +245,6 @@ public class TransactionService {
         return info;
     }
 
-    /**
-     * Get daily wallet expense
-     */
     public String[] getDailyWalletExpense(User loggedUser) {
         String[] info = new String[2];
         double monthlyExpense = 0;
@@ -351,9 +290,6 @@ public class TransactionService {
         return info;
     }
 
-    /**
-     * Get monthly account expense
-     */
     public String[] getMonthlyAccountExpense(User loggedUser, String monthName) {
         String[] info = new String[2];
         double monthlyExpense = 0;
@@ -390,9 +326,6 @@ public class TransactionService {
         return info;
     }
 
-    /**
-     * Get daily account expense
-     */
     public String[] getDailyAccountExpense(User loggedUser) {
         String[] info = new String[2];
         double monthlyExpense = 0;
@@ -429,9 +362,6 @@ public class TransactionService {
         return info;
     }
 
-    /**
-     * Generate unique transaction reference ID
-     */
     public String generateRefID() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         StringBuilder refID = new StringBuilder("TXN-");
