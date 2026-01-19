@@ -15,7 +15,6 @@ import java.time.LocalDate;
 
 /**
  * RegistrationController - User registration
- * ALL ORIGINAL VALIDATION LOGIC PRESERVED
  */
 @Controller
 public class RegistrationController {
@@ -41,7 +40,7 @@ public class RegistrationController {
             @RequestParam("password") String password,
             RedirectAttributes redirectAttributes) {
 
-        // ORIGINAL VALIDATION LOGIC - EXACT SAME
+        
         boolean check = true;
 
         if (name == null || name.isEmpty()) {
@@ -85,7 +84,7 @@ public class RegistrationController {
             }
         }
 
-        // ORIGINAL BUSINESS LOGIC - EXACT SAME
+        
         if (check) {
             User user = new User(name, mobile, email, password, dobString, account, nid);
 

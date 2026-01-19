@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 
 /**
  * UserListController - Admin view users with search and delete
- * ALL ORIGINAL LOGIC PRESERVED
  */
 @Controller
 public class UserListController {
@@ -43,7 +42,7 @@ public class UserListController {
             return "redirect:/login";
         }
 
-        // ORIGINAL LOGIC
+        
         List<User> userList = userService.getUserList();
 
         model.addAttribute("users", userList);
@@ -51,7 +50,7 @@ public class UserListController {
         return "userList";
     }
 
-    // ORIGINAL SEARCH LOGIC - filter by account/name/nid/mobile
+    
     @GetMapping("/admin/users/search")
     public String startSearch(@RequestParam("search") String search,
             HttpSession session,
@@ -77,7 +76,7 @@ public class UserListController {
         return "userList";
     }
 
-    // ORIGINAL GET USER BALANCE LOGIC (when table row selected)
+    
     // ENHANCED DETAIL VIEW (was getUserBalance)
     @GetMapping("/admin/users/balance")
     public String getUserBalance(@RequestParam("mobile") String mobile,
@@ -171,12 +170,12 @@ public class UserListController {
         return "redirect:/admin/users";
     }
 
-    // ORIGINAL DELETE LOGIC
+    
     @PostMapping("/admin/api/users/delete")
     public String delete(@RequestParam("mobile") String mobile,
             RedirectAttributes redirectAttributes) {
 
-        // ORIGINAL BUSINESS LOGIC
+        
         userService.deleteUser(mobile);
 
         redirectAttributes.addFlashAttribute("warningMessage", "Deleted");

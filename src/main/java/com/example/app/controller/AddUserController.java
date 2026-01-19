@@ -14,8 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 
 /**
- * AddUserController - Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class AddUserController {
@@ -36,7 +34,6 @@ public class AddUserController {
 
     /**
      * Add new user - EXACT SAME VALIDATION AND LOGIC
-     * Original: add() method - ALL LOGIC PRESERVED
      */
     @PostMapping("/admin/api/add-user")
     public String add(@RequestParam("name") String name,
@@ -48,7 +45,7 @@ public class AddUserController {
             @RequestParam("password") String password,
             RedirectAttributes redirectAttributes) {
 
-        // ORIGINAL VALIDATION LOGIC - EXACT SAME
+        
         boolean check = true;
 
         if (name == null || name.isEmpty()) {
@@ -92,7 +89,7 @@ public class AddUserController {
             }
         }
 
-        // ORIGINAL BUSINESS LOGIC - EXACT SAME
+        
         if (check) {
             User user = new User(name, mobile, email, password, dobString, account, nid);
 
@@ -129,7 +126,6 @@ public class AddUserController {
 
     /**
      * Redirect to admin home
-     * Original: changeToAdminHome() method
      */
     @GetMapping("/admin/add-user/to-home")
     public String changeToAdminHome() {

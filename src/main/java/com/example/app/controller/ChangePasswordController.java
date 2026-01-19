@@ -14,8 +14,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 
 /**
- * ChangePasswordController - Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class ChangePasswordController {
@@ -40,7 +38,6 @@ public class ChangePasswordController {
 
     /**
      * Submit password change
-     * Original: submit() method - ALL VALIDATION LOGIC PRESERVED
      */
     @PostMapping("/api/change-password")
     public String submit(@RequestParam("currentPassword") String currentPassword,
@@ -55,7 +52,7 @@ public class ChangePasswordController {
             return "redirect:/login";
         }
 
-        // ORIGINAL VALIDATION LOGIC - EXACT SAME
+        
         boolean check = true;
 
         // Current password validation - EXACT SAME LOGIC
@@ -93,7 +90,7 @@ public class ChangePasswordController {
             return "redirect:/change-password";
         }
 
-        // ORIGINAL BUSINESS LOGIC - EXACT SAME
+        
         if (check) {
             UserService.changePassword(loggedUser.getMobile(), newPassword, mongoTemplate);
             redirectAttributes.addFlashAttribute("successMessage",
@@ -108,7 +105,6 @@ public class ChangePasswordController {
 
     /**
      * Redirect to menu
-     * Original: changeToMenu() method
      */
     @GetMapping("/change-password/to-menu")
     public String changeToMenu() {

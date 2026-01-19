@@ -10,13 +10,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 
 /**
- * UserService - Converted from MySQL to MongoDB
- * ALL original business logic preserved exactly
  */
 @Service
 public class UserService {
@@ -24,53 +19,36 @@ public class UserService {
     @Autowired
     private MongoTemplate mongoTemplate;
 
-    /**
-     * Helper: Encrypt password using SHA-256
-     */
-    private static String encryptPassword(String password) {
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(password.getBytes());
-            return Base64.getEncoder().encodeToString(hash);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return password; // Fallback (shouldn't happen)
-        }
-    }
+    @Autowired
+    private org.springframework.security.crypto.password.PasswordEncoder passwordEncoder;
 
     /**
      * Register new user
-     * Original logic: Update existing bank account with online credentials
      */
     public boolean registration(User user) {
         try {
             if (user != null) {
-                // Check if account exists first (sanity check, though controller does it too)
                 Query query = new Query(Criteria.where("account").is(user.getAccount()));
                 User existingUser = mongoTemplate.findOne(query, User.class);
 
                 if (existingUser != null) {
-                    // Update the existing user with registration details
                     existingUser.setName(user.getName());
                     existingUser.setMobile(user.getMobile());
                     existingUser.setEmail(user.getEmail());
                     existingUser.setNid(user.getNid());
                     existingUser.setDOB(user.getDOB());
 
-                    // Encrypt and set password
-                    existingUser.setPassword(encryptPassword(user.getPassword()));
+                    // Secure Password Hashing
+                    existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
-                    // Set active and defaults
                     existingUser.setIsActive(true);
                     existingUser.setWalletBalance(0.0);
-                    // Preserve existing balance if any
 
-                    mongoTemplate.save(existingUser); // Updates because ID exists
+                    mongoTemplate.save(existingUser);
                     return true;
                 } else {
-                    // Fallback: If for some reason account checked true but not found now,
-                    // or strictly new user (unlikely given business logic)
-                    user.setPassword(encryptPassword(user.getPassword()));
+                    // Secure Password Hashing
+                    user.setPassword(passwordEncoder.encode(user.getPassword()));
                     mongoTemplate.insert(user);
                     return true;
                 }
@@ -83,35 +61,20 @@ public class UserService {
 
     /**
      * User login
-     * Original logic: Query user by mobile and password
-     * Updated: Supports both Encrypted and Plain text (auto-migrates plain text)
      */
     public User login(String mobile, String password) {
         try {
-            // 1. Try with ENCRYPTED password (New standard)
-            String encryptedPassword = encryptPassword(password);
-            Query query = new Query(Criteria.where("mobile").is(mobile).and("password").is(encryptedPassword));
+            Query query = new Query(Criteria.where("mobile").is(mobile));
             User user = mongoTemplate.findOne(query, User.class);
 
             if (user != null) {
-                return new User(user.getName(), user.getMobile(), user.getEmail(), user.getDOB(), user.getAccount(),
-                        user.getNid());
+                // Check password match (works for both BCrypt and potentially plain text if we
+                // wanted,
+                // but strictly BCrypt now)
+                if (passwordEncoder.matches(password, user.getPassword())) {
+                    return user;
+                }
             }
-
-            // 2. Fallback: Try with PLAIN TEXT password (Old data)
-            Query plainQuery = new Query(Criteria.where("mobile").is(mobile).and("password").is(password));
-            User plainUser = mongoTemplate.findOne(plainQuery, User.class);
-
-            if (plainUser != null) {
-                // Found with plain text! Auto-migrate to encrypted for next time
-                plainUser.setPassword(encryptedPassword);
-                mongoTemplate.save(plainUser);
-
-                return new User(plainUser.getName(), plainUser.getMobile(), plainUser.getEmail(), plainUser.getDOB(),
-                        plainUser.getAccount(),
-                        plainUser.getNid());
-            }
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -120,11 +83,12 @@ public class UserService {
 
     /**
      * Delete user
-     * Original logic: Delete user by mobile number
      */
     public User deleteUser(String mobile) {
         try {
             Query query = new Query(Criteria.where("mobile").is(mobile));
+            // In older spring data versions remove returns void or DeleteResult,
+            // but the original code had this returning null anyway.
             mongoTemplate.remove(query, User.class);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -134,35 +98,17 @@ public class UserService {
 
     /**
      * Admin login
-     * Original logic: Query admin table by id and password
-     * Updated: Supports both Encrypted and Plain text
      */
     public User adminLogin(String mobile, String password) {
         try {
-            // 1. Try with ENCRYPTED password
-            String encryptedPassword = encryptPassword(password);
-            Query query = new Query(Criteria.where("mobile").is(mobile)
-                    .and("password").is(encryptedPassword)
-                    .and("userRole").is("ADMIN"));
+            Query query = new Query(Criteria.where("mobile").is(mobile).and("userRole").is("ADMIN"));
             User admin = mongoTemplate.findOne(query, User.class);
 
             if (admin != null) {
-                return admin;
+                if (passwordEncoder.matches(password, admin.getPassword())) {
+                    return admin;
+                }
             }
-
-            // 2. Fallback: Try with PLAIN TEXT password
-            Query plainQuery = new Query(Criteria.where("mobile").is(mobile)
-                    .and("password").is(password)
-                    .and("userRole").is("ADMIN"));
-            User plainAdmin = mongoTemplate.findOne(plainQuery, User.class);
-
-            if (plainAdmin != null) {
-                // Auto-migrate
-                plainAdmin.setPassword(encryptedPassword);
-                mongoTemplate.save(plainAdmin);
-                return plainAdmin;
-            }
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -173,12 +119,10 @@ public class UserService {
 
     /**
      * Change user password
-     * Original logic: Update password for user with matching mobile
      */
     public boolean changePassword(String mobile, String newPassword) {
         try {
-            // ENCRYPT NEW PASSWORD
-            String encryptedPassword = encryptPassword(newPassword);
+            String encryptedPassword = passwordEncoder.encode(newPassword);
 
             Query query = new Query(Criteria.where("mobile").is(mobile));
             Update update = new Update().set("password", encryptedPassword);
@@ -200,7 +144,6 @@ public class UserService {
 
     /**
      * Check if bank account exists
-     * Original logic: Query bankAccount table
      * Note: Assuming account stored in User model
      */
     public boolean checkAccount(String account) {
@@ -219,7 +162,6 @@ public class UserService {
 
     /**
      * Check if online wallet account exists
-     * Original logic: Query wallet table by mobile
      * Note: Assuming wallet stored in User model
      */
     public boolean checkAccountOnline(String mobile) {
@@ -238,7 +180,6 @@ public class UserService {
 
     /**
      * Get user information
-     * Original logic: Query user by mobile, return array of info
      */
     public static String[] userInfo(String mobile, MongoTemplate mongoTemplate) {
         String[] info = new String[6];
@@ -263,7 +204,6 @@ public class UserService {
 
     /**
      * Check if account exists for mobile
-     * Original logic: Query user by mobile, check if account matches
      */
     public static boolean existingAccount(String mobile, String account, MongoTemplate mongoTemplate) {
         try {
@@ -281,12 +221,11 @@ public class UserService {
 
     /**
      * Change user password
-     * Original logic: Update password for user with matching mobile
      */
     public static boolean changePassword(String mobile, String newPassword, MongoTemplate mongoTemplate) {
         try {
-            // ENCRYPT PASSWORD
-            String encryptedPassword = encryptPassword(newPassword);
+            org.springframework.security.crypto.password.PasswordEncoder encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
+            String encryptedPassword = encoder.encode(newPassword);
 
             Query query = new Query(Criteria.where("mobile").is(mobile));
             Update update = new Update().set("password", encryptedPassword);
@@ -300,7 +239,6 @@ public class UserService {
 
     /**
      * Create online banking account (wallet)
-     * Original logic: Insert into wallet table
      * Note: Assuming wallet fields stored in User model
      */
     public static void createOnlineBankingAccount(String account, String mobile, double balance,
@@ -319,7 +257,6 @@ public class UserService {
 
     /**
      * Get balance from bank account
-     * Original logic: Query bankAccount table, return balance
      */
     public static double getBalanceAccount(String account, MongoTemplate mongoTemplate) {
         try {
@@ -342,7 +279,6 @@ public class UserService {
 
     /**
      * Get balance from online wallet
-     * Original logic: Query wallet table by mobile, return balance
      */
     public static double getBalanceOnline(String wallet, MongoTemplate mongoTemplate) {
         try {
@@ -365,20 +301,18 @@ public class UserService {
 
     /**
      * Verify user PIN/password
-     * Original logic: Query user by password and mobile, check match
      * Note: Requires current logged user - needs session management
      */
 
     public static boolean verifyPin(String password, String mobile, MongoTemplate mongoTemplate) {
         try {
-            // ENCRYPT INPUT PASSWORD
-            String encryptedPassword = encryptPassword(password);
-
-            Query query = new Query(Criteria.where("password").is(encryptedPassword).and("mobile").is(mobile));
+            Query query = new Query(Criteria.where("mobile").is(mobile));
             User user = mongoTemplate.findOne(query, User.class);
 
             if (user != null) {
-                return encryptedPassword.equals(user.getPassword());
+                // Use BCrypt to verify
+                org.springframework.security.crypto.password.PasswordEncoder encoder = new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
+                return encoder.matches(password, user.getPassword());
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -388,7 +322,6 @@ public class UserService {
 
     /**
      * Apply for cheque book
-     * Original logic: Insert cheque application into database
      * Note: You'll need to create a Cheque model
      */
     public static void chequeApply(String account, String applied, int page, int chequeBook, String name,
@@ -412,7 +345,6 @@ public class UserService {
 
     /**
      * Check if user has previous cheque application
-     * Original logic: Query cheque table by account
      */
     public static boolean lastApplied(String account, MongoTemplate mongoTemplate) {
         try {
@@ -431,7 +363,6 @@ public class UserService {
 
     /**
      * Get list of all users
-     * Original logic: Query all users from database
      */
     public static List<User> getUserList(MongoTemplate mongoTemplate) {
         List<User> userList = new ArrayList<>();
@@ -450,7 +381,6 @@ public class UserService {
 
     /**
      * Get list of cheque applications
-     * Original logic: Query all cheque records
      * Note: Returns User objects for compatibility
      */
     public static List<User> getChequeList(MongoTemplate mongoTemplate) {
@@ -500,7 +430,6 @@ public class UserService {
 
     /**
      * Delete cheque application
-     * Original logic: Delete cheque record by account
      */
     public User deleteCheque(String account) {
         try {

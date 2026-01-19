@@ -14,8 +14,6 @@ import jakarta.servlet.http.HttpSession;
 
 /**
  * LoginController - User login
- * Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class LoginController {
@@ -33,7 +31,6 @@ public class LoginController {
 
     /**
      * User login authentication
-     * Original: login() method - ALL LOGIC PRESERVED
      */
     @PostMapping("/api/auth/login")
     public String login(@RequestParam("mobile") String mobile,
@@ -71,7 +68,6 @@ public class LoginController {
 
     /**
      * Redirect to registration
-     * Original: changeToRegistration() method
      */
     @GetMapping("/login/to-registration")
     public String changeToRegistration() {
@@ -80,7 +76,6 @@ public class LoginController {
 
     /**
      * Back to first page
-     * Original: back() method
      */
     @GetMapping("/login/back")
     public String back() {

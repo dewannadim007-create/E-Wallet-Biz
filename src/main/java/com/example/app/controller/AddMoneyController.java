@@ -17,8 +17,6 @@ import jakarta.servlet.http.HttpSession;
 import java.time.LocalDate;
 
 /**
- * AddMoneyController - Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class AddMoneyController {
@@ -34,7 +32,6 @@ public class AddMoneyController {
 
     /**
      * Show add money page with current balance
-     * Original: initialize() method
      */
     @GetMapping("/add-money")
     public String showAddMoneyPage(HttpSession session, Model model) {
@@ -44,7 +41,7 @@ public class AddMoneyController {
             return "redirect:/login";
         }
 
-        // Original logic: balanceLabel.setText("Bank Balance:
+        
         // ৳"+UserService.getBalanceAccount(...));
         double balance = UserService.getBalanceAccount(loggedUser.getAccount(), mongoTemplate);
         model.addAttribute("balance", balance);
@@ -55,7 +52,6 @@ public class AddMoneyController {
 
     /**
      * Transfer money from bank account to wallet
-     * Original: transfer() method - ALL LOGIC PRESERVED
      */
     @PostMapping("/api/add-money")
     public String transfer(@RequestParam("amount") double amount,
@@ -69,7 +65,7 @@ public class AddMoneyController {
             return "redirect:/login";
         }
 
-        // ORIGINAL BUSINESS LOGIC - EXACT SAME
+        
         boolean haveAccount = userService.checkAccountOnline(loggedUser.getMobile());
         double senderBalance = UserService.getBalanceAccount(loggedUser.getAccount(), mongoTemplate);
         double remainingBalance = senderBalance - amount - 1000;
@@ -117,7 +113,6 @@ public class AddMoneyController {
 
     /**
      * Redirect to eBanking page
-     * Original: changeToEBanking() method
      */
     @GetMapping("/add-money/to-ebanking")
     public String changeToEBanking() {

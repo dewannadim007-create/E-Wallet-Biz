@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import jakarta.servlet.http.HttpSession;
 
 /**
- * EBankingController - Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class EBankingController {
@@ -22,7 +20,6 @@ public class EBankingController {
 
     /**
      * Show e-banking page with bank and wallet balances
-     * Original: Methods - checkWallet() and checkBank()
      */
     @GetMapping("/ebanking")
     public String showEBankingPage(HttpSession session, Model model) {
@@ -32,10 +29,10 @@ public class EBankingController {
             return "redirect:/login";
         }
 
-        // ORIGINAL LOGIC - Get wallet balance
+        
         double walletBalance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
 
-        // ORIGINAL LOGIC - Get bank balance
+        
         double bankBalance = UserService.getBalanceAccount(loggedUser.getAccount(), mongoTemplate);
 
         model.addAttribute("walletBalance", walletBalance);
@@ -47,7 +44,6 @@ public class EBankingController {
 
     /**
      * Check wallet balance separately (AJAX endpoint)
-     * Original: checkWallet() method
      */
     @GetMapping("/api/ebanking/check-wallet")
     public String checkWallet(HttpSession session, Model model) {
@@ -57,7 +53,7 @@ public class EBankingController {
             return "redirect:/login";
         }
 
-        // ORIGINAL LOGIC
+        
         double walletBalance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         model.addAttribute("walletBalance", walletBalance);
 
@@ -66,7 +62,6 @@ public class EBankingController {
 
     /**
      * Check bank balance separately (AJAX endpoint)
-     * Original: checkBank() method
      */
     @GetMapping("/api/ebanking/check-bank")
     public String checkBank(HttpSession session, Model model) {
@@ -76,7 +71,7 @@ public class EBankingController {
             return "redirect:/login";
         }
 
-        // ORIGINAL LOGIC
+        
         double bankBalance = UserService.getBalanceAccount(loggedUser.getAccount(), mongoTemplate);
         model.addAttribute("bankBalance", bankBalance);
 
@@ -85,7 +80,6 @@ public class EBankingController {
 
     /**
      * Redirect to add money
-     * Original: addMoney() method
      */
     @GetMapping("/ebanking/add-money")
     public String addMoney() {
@@ -94,7 +88,6 @@ public class EBankingController {
 
     /**
      * Redirect to home
-     * Original: changeToHome() method
      */
     @GetMapping("/ebanking/to-home")
     public String changeToHome() {

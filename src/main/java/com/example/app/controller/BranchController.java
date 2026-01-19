@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * BranchController - Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class BranchController {
@@ -23,11 +21,10 @@ public class BranchController {
 
     /**
      * Show branch list page
-     * Original: initialize() method - ALL LOGIC PRESERVED
      */
     @GetMapping("/branch")
     public String showBranchList(Model model) {
-        // ORIGINAL LOGIC - Get all branches
+        
         List<Branch> branchList = branchService.getBranchList();
 
         model.addAttribute("branches", branchList);
@@ -36,12 +33,11 @@ public class BranchController {
 
     /**
      * Search branches by name, type, or location
-     * Original: startSearch() method - EXACT SAME FILTERING LOGIC
      */
     @GetMapping("/branch/search")
     public String startSearch(@RequestParam("search") String search, Model model) {
 
-        // ORIGINAL LOGIC - EXACT SAME
+        
         String searchLower = search.toLowerCase();
         List<Branch> branchList = branchService.getBranchList();
 
@@ -59,7 +55,6 @@ public class BranchController {
 
     /**
      * Redirect to first page
-     * Original: changeToFirst() method
      */
     @GetMapping("/branch/to-first")
     public String changeToFirst() {

@@ -18,8 +18,6 @@ import java.time.LocalDate;
 
 /**
  * BBController - Bank to Bank transfer
- * Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class BBController {
@@ -50,7 +48,6 @@ public class BBController {
 
     /**
      * Bank to Bank transfer
-     * Original: transfer() method - ALL LOGIC PRESERVED
      */
     @PostMapping("/api/bb-transfer")
     public String transfer(@RequestParam("amount") double amount,
@@ -65,7 +62,7 @@ public class BBController {
             return "redirect:/login";
         }
 
-        // ORIGINAL BUSINESS LOGIC - EXACT SAME
+        
         boolean haveAccount = userService.checkAccount(receiverAccount);
         double senderBalance = UserService.getBalanceAccount(loggedUser.getAccount(), mongoTemplate);
         double remainingBalance = senderBalance - amount - 1000;
@@ -114,7 +111,6 @@ public class BBController {
 
     /**
      * Redirect to send money page
-     * Original: changeToHome() method
      */
     @GetMapping("/bb-transfer/to-send-money")
     public String changeToHome() {

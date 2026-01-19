@@ -6,8 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 /**
  * FirstController - Landing page
- * Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class FirstController {
@@ -38,7 +36,6 @@ public class FirstController {
 
     /**
      * Redirect to user login
-     * Original: user() method
      */
     @GetMapping("/first/user")
     public String user() {
@@ -47,7 +44,6 @@ public class FirstController {
 
     /**
      * Redirect to FAQ
-     * Original: changeToFaq() method
      */
     @GetMapping("/first/faq")
     public String changeToFaq() {
@@ -56,7 +52,6 @@ public class FirstController {
 
     /**
      * Redirect to branch list
-     * Original: branch() method
      */
     @GetMapping("/first/branch")
     public String branch() {

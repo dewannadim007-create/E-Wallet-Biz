@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpSession;
 
 /**
  * UserProfileController - User profile display
- * ALL ORIGINAL LOGIC PRESERVED
  */
 @Controller
 public class UserProfileController {
@@ -28,11 +27,11 @@ public class UserProfileController {
             return "redirect:/login";
         }
 
-        // ORIGINAL LOGIC - Get user info array
+        
         String[] info = UserService.userInfo(loggedUser.getMobile(), mongoTemplate);
 
         if (info != null) {
-            // ORIGINAL FIELD MAPPING
+            
             model.addAttribute("name", info[0]); // name
             model.addAttribute("mobile", info[1]); // mobile
             model.addAttribute("account", info[2]); // account

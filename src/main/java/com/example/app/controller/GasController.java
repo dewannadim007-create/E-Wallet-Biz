@@ -18,8 +18,6 @@ import java.time.LocalDate;
 
 /**
  * GasController - Gas bill payment
- * Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class GasController {
@@ -32,7 +30,6 @@ public class GasController {
 
     /**
      * Show gas payment page with current balance
-     * Original: initialize() method
      */
     @GetMapping("/gas")
     public String showGasPage(HttpSession session, Model model) {
@@ -42,7 +39,7 @@ public class GasController {
             return "redirect:/login";
         }
 
-        // ORIGINAL LOGIC
+        
         double availableBalance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
 
         model.addAttribute("availableBalance", availableBalance);
@@ -53,7 +50,6 @@ public class GasController {
 
     /**
      * Set amount to 500
-     * Original: add500() method
      */
     @GetMapping("/gas/set-500")
     public String add500(Model model, HttpSession session) {
@@ -63,7 +59,6 @@ public class GasController {
 
     /**
      * Set amount to 1000
-     * Original: add1000() method
      */
     @GetMapping("/gas/set-1000")
     public String add1000(Model model, HttpSession session) {
@@ -73,7 +68,6 @@ public class GasController {
 
     /**
      * Set amount to 1200
-     * Original: add1200() method
      */
     @GetMapping("/gas/set-1200")
     public String add1200(Model model, HttpSession session) {
@@ -83,7 +77,6 @@ public class GasController {
 
     /**
      * Set amount to 1500
-     * Original: add1500() method
      */
     @GetMapping("/gas/set-1500")
     public String add1500(Model model, HttpSession session) {
@@ -93,7 +86,6 @@ public class GasController {
 
     /**
      * Process gas bill payment
-     * Original: proceed() method - ALL LOGIC PRESERVED
      */
     @PostMapping("/api/gas/proceed")
     public String proceed(@RequestParam("account") String account,
@@ -108,7 +100,7 @@ public class GasController {
             return "redirect:/login";
         }
 
-        // ORIGINAL BUSINESS LOGIC - EXACT SAME
+        
         double balance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
 
         if (givenAmount < balance &&
@@ -135,7 +127,6 @@ public class GasController {
 
     /**
      * Redirect to utility page
-     * Original: changeToUtility() method
      */
     @GetMapping("/gas/to-utility")
     public String changeToUtility() {

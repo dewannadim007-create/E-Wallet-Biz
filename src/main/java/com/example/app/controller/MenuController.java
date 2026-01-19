@@ -8,8 +8,6 @@ import jakarta.servlet.http.HttpSession;
 
 /**
  * MenuController - Main navigation menu
- * Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class MenuController {

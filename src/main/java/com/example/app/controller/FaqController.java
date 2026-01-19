@@ -5,8 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
- * FaqController - Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class FaqController {
@@ -21,7 +19,6 @@ public class FaqController {
 
     /**
      * Redirect to first page
-     * Original: changeToFirst() method
      */
     @GetMapping("/faq/to-first")
     public String changeToFirst() {

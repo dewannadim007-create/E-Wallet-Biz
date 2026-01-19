@@ -18,7 +18,6 @@ import java.time.LocalDate;
 
 /**
  * WWController - Wallet to Wallet transfer
- * ALL ORIGINAL LOGIC PRESERVED
  */
 @Controller
 public class WWController {
@@ -57,7 +56,7 @@ public class WWController {
             return "redirect:/login";
         }
 
-        // ORIGINAL BUSINESS LOGIC - EXACT SAME (NO minimum 1000 check for WW)
+        
         boolean haveAccount = userService.checkAccountOnline(receiverWallet);
         double senderBalance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         double remainingBalance = senderBalance - amount;

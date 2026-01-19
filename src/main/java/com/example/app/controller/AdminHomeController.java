@@ -14,8 +14,6 @@ import java.time.LocalTime;
 import java.util.List;
 
 /**
- * AdminHomeController - Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class AdminHomeController {
@@ -28,7 +26,6 @@ public class AdminHomeController {
 
     /**
      * Show admin home page with greetings
-     * Original: initialize() method - ALL LOGIC PRESERVED
      */
     @GetMapping("/admin/home")
     public String showAdminHome(HttpSession session, Model model) {
@@ -38,7 +35,7 @@ public class AdminHomeController {
             return "redirect:/login";
         }
 
-        // ORIGINAL LOGIC - EXACT SAME
+        
         model.addAttribute("name", "Admin".toUpperCase());
 
         // Greetings logic - EXACT SAME
@@ -100,7 +97,6 @@ public class AdminHomeController {
 
     /**
      * Redirect to user list
-     * Original: changeToUsers() method
      */
     @GetMapping("/admin/home/to-users")
     public String changeToUsers() {
@@ -109,7 +105,6 @@ public class AdminHomeController {
 
     /**
      * Redirect to cheque book status
-     * Original: changeToChequeBookStatus() method
      */
     @GetMapping("/admin/home/to-cheque-status")
     public String changeToChequeBookStatus() {
@@ -118,7 +113,6 @@ public class AdminHomeController {
 
     /**
      * Redirect to add user
-     * Original: changeToAddUser() method
      */
     @GetMapping("/admin/home/to-add-user")
     public String changeToAddUser() {
@@ -127,7 +121,6 @@ public class AdminHomeController {
 
     /**
      * Redirect to transaction list
-     * Original: changeToTransactionList() method
      */
     @GetMapping("/admin/home/to-transactions")
     public String changeToTransactionList() {
@@ -192,7 +185,6 @@ public class AdminHomeController {
 
     /**
      * Logout and redirect to first page
-     * Original: changeToFirst() method
      */
     @GetMapping("/admin/logout")
     public String changeToFirst(HttpSession session) {

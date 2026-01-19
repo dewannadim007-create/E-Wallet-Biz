@@ -18,7 +18,6 @@ import java.time.LocalDate;
 
 /**
  * PaymentController - Electricity bill payment (DESCO, DPDC)
- * ALL ORIGINAL LOGIC PRESERVED
  */
 @Controller
 public class PaymentController {
@@ -35,11 +34,11 @@ public class PaymentController {
         if (loggedUser == null)
             return "redirect:/login";
 
-        // ORIGINAL LOGIC
+        
         double availableBalance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         model.addAttribute("availableBalance", availableBalance);
 
-        // ORIGINAL PROVIDERS: DESCO, DPDC
+        
         model.addAttribute("providers", new String[] { "DESCO", "DPDC" });
         model.addAttribute("types", new String[] { "Prepaid", "Postpaid" });
         model.addAttribute("user", loggedUser);
@@ -60,7 +59,7 @@ public class PaymentController {
         if (loggedUser == null)
             return "redirect:/login";
 
-        // ORIGINAL BUSINESS LOGIC - EXACT SAME
+        
         double balance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         String providerLower = provider.toLowerCase();
 

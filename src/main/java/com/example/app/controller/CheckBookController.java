@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * CheckBookController - Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class CheckBookController {
@@ -43,16 +41,16 @@ public class CheckBookController {
             return "redirect:/login";
         }
 
-        // ORIGINAL LOGIC - Display user info
+        
         model.addAttribute("name", loggedUser.getName());
         model.addAttribute("account", loggedUser.getAccount());
         model.addAttribute("mobile", loggedUser.getMobile());
         model.addAttribute("user", loggedUser);
 
-        // ORIGINAL LOGIC - Page options: 10, 20, 50
+        
         model.addAttribute("pageOptions", new Integer[] { 10, 20, 50 });
 
-        // ORIGINAL LOGIC - Check number options: 1, 2
+        
         model.addAttribute("checkNumberOptions", new Integer[] { 1, 2 });
 
         // FETCH HISTORY (New Feature)
@@ -94,13 +92,13 @@ public class CheckBookController {
             return "redirect:/login";
         }
 
-        // ORIGINAL VALIDATION - EXACT SAME
+        
         if (page == null || checkNumber == null || password == null || password.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Please fill all fields");
             return "redirect:/chequebook";
         }
 
-        // ORIGINAL BUSINESS LOGIC - EXACT SAME
+        
         String applyDate = String.valueOf(LocalDate.now());
         String account = loggedUser.getAccount();
 

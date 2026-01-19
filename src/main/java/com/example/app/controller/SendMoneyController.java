@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpSession;
 
 /**
  * SendMoneyController - Navigation to different transfer types
- * ALL ORIGINAL LOGIC PRESERVED
  */
 @Controller
 public class SendMoneyController {

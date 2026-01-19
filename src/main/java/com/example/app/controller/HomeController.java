@@ -19,8 +19,6 @@ import java.time.LocalTime;
 
 /**
  * HomeController - User home/dashboard
- * Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class HomeController {
@@ -33,7 +31,6 @@ public class HomeController {
 
     /**
      * Show home page with greetings and user info
-     * Original: initialize() method - ALL LOGIC PRESERVED
      */
     @GetMapping("/home")
     public String showHomePage(HttpSession session, Model model) {
@@ -43,14 +40,12 @@ public class HomeController {
             return "redirect:/login";
         }
 
-        // ORIGINAL LOGIC - Get user info
         String[] info = UserService.userInfo(loggedUser.getMobile(), mongoTemplate);
 
         if (info != null) {
             model.addAttribute("name", info[0].toUpperCase());
         }
 
-        // ORIGINAL GREETINGS LOGIC - EXACT SAME
         int hour = LocalTime.now().getHour();
         String greeting;
         if (hour >= 5 && hour < 12) {
@@ -92,7 +87,6 @@ public class HomeController {
 
     /**
      * Check wallet balance
-     * Original: checkWallet() method
      */
     @GetMapping("/api/home/check-wallet")
     public String checkWallet(HttpSession session, RedirectAttributes redirectAttributes) {
@@ -102,7 +96,6 @@ public class HomeController {
             return "redirect:/login";
         }
 
-        // ORIGINAL LOGIC
         double checkBalance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         redirectAttributes.addFlashAttribute("balance", checkBalance);
 
@@ -111,7 +104,6 @@ public class HomeController {
 
     /**
      * Redirect to menu
-     * Original: changeToMenu() method
      */
     @GetMapping("/home/to-menu")
     public String changeToMenu() {
@@ -120,7 +112,6 @@ public class HomeController {
 
     /**
      * Redirect to utility
-     * Original: changeToUtility() method
      */
     @GetMapping("/home/to-utility")
     public String changeToUtility() {
@@ -129,7 +120,6 @@ public class HomeController {
 
     /**
      * Redirect to send money
-     * Original: changeToSendMoney() method
      */
     @GetMapping("/home/to-send-money")
     public String changeToSendMoney() {
@@ -138,7 +128,6 @@ public class HomeController {
 
     /**
      * Redirect to e-banking
-     * Original: changeToEBanking() method
      */
     @GetMapping("/home/to-ebanking")
     public String changeToEBanking() {
@@ -147,7 +136,6 @@ public class HomeController {
 
     /**
      * Redirect to checkbook
-     * Original: changeToCheckBook() method
      */
     @GetMapping("/home/to-checkbook")
     public String changeToCheckBook() {
@@ -156,7 +144,6 @@ public class HomeController {
 
     /**
      * Redirect to statement
-     * Original: changeToStatement() method
      */
     @GetMapping("/home/to-statement")
     public String changeToStatement() {

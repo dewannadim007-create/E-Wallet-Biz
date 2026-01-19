@@ -18,7 +18,6 @@ import java.time.LocalDate;
 
 /**
  * RechargeController - Mobile recharge
- * ALL ORIGINAL LOGIC PRESERVED
  */
 @Controller
 public class RechargeController {
@@ -35,11 +34,11 @@ public class RechargeController {
         if (loggedUser == null)
             return "redirect:/login";
 
-        // ORIGINAL LOGIC
+        
         double availableBalance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         model.addAttribute("availableBalance", availableBalance);
 
-        // ORIGINAL OPERATORS: Grameenphone, Airtel, Banglalink, Teletalk, Robi
+        
         model.addAttribute("operators", new String[] {
                 "Grameenphone", "Airtel", "Banglalink", "Teletalk", "Robi"
         });
@@ -62,7 +61,7 @@ public class RechargeController {
         if (loggedUser == null)
             return "redirect:/login";
 
-        // ORIGINAL VALIDATION - Check if amount field is empty
+        
         if (amountStr == null || amountStr.isEmpty()) {
             redirectAttributes.addFlashAttribute("errorMessage", "Insert Valid Data");
             return "redirect:/recharge";
@@ -72,7 +71,7 @@ public class RechargeController {
         double balance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         String providerLower = operator.toLowerCase();
 
-        // ORIGINAL BUSINESS LOGIC - EXACT SAME (minimum 20, account length 11)
+        
         if (givenAmount < balance &&
                 UserService.verifyPin(password, loggedUser.getMobile(), mongoTemplate) &&
                 givenAmount >= 20 &&
@@ -94,7 +93,7 @@ public class RechargeController {
         }
     }
 
-    // ORIGINAL PRESET AMOUNTS: 20, 50, 100, 500
+    
     @GetMapping("/recharge/set-20")
     public String add20(Model model, HttpSession session) {
         model.addAttribute("presetAmount", 20);

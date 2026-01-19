@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * BranchService - Converted from MySQL to MongoDB
- * All original business logic preserved
+ 
  */
 @Service
 public class BranchService {
@@ -20,7 +19,6 @@ public class BranchService {
 
     /**
      * Get list of all branches
-     * Original logic preserved - returns all branches from database
      */
     public List<Branch> getBranchList() {
         List<Branch> branchList = new ArrayList<>();

@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Transaction entity representing banking transactions
- * Converted from MySQL to MongoDB
  */
 @Document(collection = "transactions")
 public class Transaction {
@@ -21,7 +20,7 @@ public class Transaction {
     @Id
     private String id;
 
-    // Original fields from your MySQL model
+    
     @NotBlank(message = "Receiver is required")
     @Indexed
     private String receiver; // Receiver account number

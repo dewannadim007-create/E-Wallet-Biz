@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 
 /**
  * User entity representing a bank customer
- * Converted from MySQL to MongoDB
  */
 @Document(collection = "users")
 public class User {
@@ -21,7 +20,7 @@ public class User {
     @Id
     private String id;
 
-    // Original fields from your MySQL model
+    
     @NotBlank(message = "Name is required")
     private String name;
 

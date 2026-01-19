@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpSession;
 
 /**
  * UtilityController - Navigation to utility services
- * ALL ORIGINAL LOGIC PRESERVED
  */
 @Controller
 public class UtilityController {

@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * ChequeBookStatusController - Converted from JavaFX to Spring Boot
- * All original business logic preserved
  */
 @Controller
 public class ChequeBookStatusController {
@@ -30,7 +28,6 @@ public class ChequeBookStatusController {
 
     /**
      * Show cheque book status page
-     * Original: initialize() method - ALL LOGIC PRESERVED
      */
     @GetMapping("/admin/cheque-status")
     public String showChequeBookStatus(
@@ -99,7 +96,6 @@ public class ChequeBookStatusController {
 
     /**
      * Redirect to admin home
-     * Original: changeToAdminHome() method
      */
     @GetMapping("/admin/cheque-status/to-home")
     public String changeToAdminHome() {
@@ -108,7 +104,6 @@ public class ChequeBookStatusController {
 
     /**
      * Alternative home redirect
-     * Original: changeToHome() method
      */
     @GetMapping("/admin/cheque-status/home")
     public String changeToHome() {

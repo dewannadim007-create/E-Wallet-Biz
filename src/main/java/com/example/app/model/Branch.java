@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 /**
  * Branch entity representing bank branches
- * Converted from MySQL to MongoDB
  */
 @Document(collection = "branches")
 public class Branch {
@@ -19,7 +18,7 @@ public class Branch {
     @Id
     private String id;
 
-    // Original fields from your MySQL model
+    
     @NotBlank(message = "Branch name is required")
     @Indexed
     private String name; // Branch name

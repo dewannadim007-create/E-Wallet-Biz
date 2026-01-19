@@ -82,21 +82,24 @@
             </div>
 
             <section class="page-content">
-                <div class="section-card" style="max-width: 760px; margin: 0 auto;">
+                <div class="section-card container-sm">
 
-
-                    <div class="section-card" style="margin:0 0 1rem 0;">
-                        <div style="display:flex; justify-content: space-between;"> <span class="muted-text">Account
-                                Name</span> <span style="font-weight:600;" th:text="${name}">User Name</span></div>
-                        <div style="display:flex; justify-content: space-between;"> <span class="muted-text">Bank
-                                Account</span> <span style="font-weight:600;" th:text="${account}">123456789</span>
+                    <div class="section-card cheque-profile-card">
+                        <div class="d-flex justify-between">
+                            <span class="muted-text">Account Name</span>
+                            <span class="font-weight-600" th:text="${name}">User Name</span>
                         </div>
-                        <div style="display:flex; justify-content: space-between;"> <span
-                                class="muted-text">Mobile</span> <span style="font-weight:600;"
-                                th:text="${mobile}">01700000000</span></div>
+                        <div class="d-flex justify-between">
+                            <span class="muted-text">Bank Account</span>
+                            <span class="font-weight-600" th:text="${account}">123456789</span>
+                        </div>
+                        <div class="d-flex justify-between">
+                            <span class="muted-text">Mobile</span>
+                            <span class="font-weight-600" th:text="${mobile}">01700000000</span>
+                        </div>
                     </div>
 
-                    <form action="/api/chequebook/apply" method="post" class="card-grid" style="--columns:2; gap:1rem;">
+                    <form action="/api/chequebook/apply" method="post" class="card-grid form-grid-2">
                         <div class="form-group">
                             <label>Pages per Book</label>
                             <select name="page" class="form-control" required>
@@ -114,32 +117,34 @@
                             </select>
                         </div>
 
-                        <div class="form-group" style="grid-column: 1 / span 2;">
+                        <div class="form-group col-span-2">
                             <label>Confirm Password</label>
                             <input type="password" name="password" class="form-control" required>
                         </div>
 
-                        <div style="grid-column: 1 / span 2;">
-                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <div class="col-span-2">
+                            <button type="submit" class="btn btn-primary w-100">
                                 Submit Request <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
                     </form>
 
-                    <div class="section-card" th:if="${successMessage}" style="margin-top:1rem; background:#e8f5e9;">
-                        <span class="badge" style="background:#2e7d32; color:#fff;">Success</span>
-                        <p style="margin:0.25rem 0 0 0;" th:text="${successMessage}">Request submitted</p>
+                    <div class="section-card mt-1 bg-success-light" th:if="${successMessage}">
+                        <span class="badge-success-solid">Success</span>
+                        <p class="m-0" style="margin-top: 0.25rem !important;" th:text="${successMessage}">Request
+                            submitted</p>
                     </div>
-                    <div class="section-card" th:if="${errorMessage}" style="margin-top:1rem; background:#fbe9e7;">
-                        <span class="badge" style="background:#c62828; color:#fff;">Error</span>
-                        <p style="margin:0.25rem 0 0 0;" th:text="${errorMessage}">There was a problem</p>
+                    <div class="section-card mt-1 bg-danger-light" th:if="${errorMessage}">
+                        <span class="badge-danger-solid">Error</span>
+                        <p class="m-0" style="margin-top: 0.25rem !important;" th:text="${errorMessage}">There was a
+                            problem</p>
                     </div>
 
                     <!-- History Section -->
-                    <div class="section-card" style="margin-top: 2rem;">
-                        <h4 style="margin-bottom: 1rem; color: var(--text-primary);">Application History</h4>
+                    <div class="section-card cheque-history-card">
+                        <h4 class="mb-1 text-color-primary">Application History</h4>
                         <div class="table-responsive">
-                            <table class="data-table" style="width:100%;">
+                            <table class="data-table w-100">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
@@ -160,7 +165,7 @@
                                         </td>
                                     </tr>
                                     <tr th:if="${#lists.isEmpty(history)}">
-                                        <td colspan="4" style="text-align: center; color: var(--text-secondary);">No
+                                        <td colspan="4" class="text-center muted-text">No
                                             previous applications.</td>
                                     </tr>
                                 </tbody>
@@ -168,7 +173,7 @@
                         </div>
                     </div>
 
-                    <div class="text-center" style="margin-top:1rem;">
+                    <div class="text-center mt-1">
                         <a href="/home" class="muted-text">Back to Home</a>
                     </div>
                 </div>

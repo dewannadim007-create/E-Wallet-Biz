@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * TransactionService - Converted from MySQL to MongoDB
- * ALL original business logic preserved exactly
+ * TransactionService - Handles all transaction related operations
  */
 @Service
 public class TransactionService {
@@ -32,7 +31,6 @@ public class TransactionService {
 
     /**
      * Transfer balance to receiver account
-     * Original logic: Get receiver balance, add amount, update database
      */
     public void balanceTransfer(String receiverAccount, double amount) {
         try {
@@ -50,7 +48,6 @@ public class TransactionService {
 
     /**
      * Transfer balance to online wallet (mobile)
-     * Original logic: Get wallet balance, add amount, update database
      */
     public void balanceTransferOnline(String receiverWallet, double amount) {
         try {
@@ -68,7 +65,6 @@ public class TransactionService {
 
     /**
      * Update sender balance after transfer
-     * Original logic: Get sender balance, subtract amount, update database
      */
     public void senderBalanceUpdate(String account, double amount) {
         try {
@@ -89,7 +85,6 @@ public class TransactionService {
 
     /**
      * Update sender online wallet balance
-     * Original logic: Get wallet balance, subtract amount, update database
      */
     public void senderBalanceUpdateOnline(String mobile, double amount) {
         try {
@@ -108,8 +103,6 @@ public class TransactionService {
 
     /**
      * Check if utility account exists
-     * Original logic: Query utility table, match provider
-     * Note: You'll need to create a Utility model for MongoDB
      */
     public boolean utilityAccountCheck(String provider, String account, String type) {
         try {
@@ -155,7 +148,6 @@ public class TransactionService {
 
     /**
      * Check utility bill balance
-     * Original logic: Query utility table, return balance
      */
     public double utilityBillCheck(String account, String provider, String type) {
         try {
@@ -174,7 +166,6 @@ public class TransactionService {
 
     /**
      * Pay utility bill
-     * Original logic: Get previous balance, add payment, update database
      */
     public void utilityBillPay(String account, String provider, String type, double amount) {
         try {
@@ -195,7 +186,6 @@ public class TransactionService {
 
     /**
      * Save transaction to history
-     * Original logic: Insert transaction into database
      */
     public boolean transactionHistory(Transaction transaction) {
         try {
@@ -252,7 +242,6 @@ public class TransactionService {
 
     /**
      * Get all transactions
-     * Original logic: Query all transactions from database
      */
     public List<Transaction> getAllTransactionList() {
         List<Transaction> transactionList = new ArrayList<>();
@@ -266,7 +255,6 @@ public class TransactionService {
 
     /**
      * Get monthly wallet expense
-     * Original logic: Sum amounts for specific month and transaction types
      */
     public String[] getMonthlyWalletExpense(User loggedUser, String monthName) {
         String[] info = new String[2];
@@ -317,7 +305,6 @@ public class TransactionService {
 
     /**
      * Get daily wallet expense
-     * Original logic: Sum amounts for today and specific transaction types
      */
     public String[] getDailyWalletExpense(User loggedUser) {
         String[] info = new String[2];
@@ -366,7 +353,6 @@ public class TransactionService {
 
     /**
      * Get monthly account expense
-     * Original logic: Sum amounts for specific month and account transaction types
      */
     public String[] getMonthlyAccountExpense(User loggedUser, String monthName) {
         String[] info = new String[2];
@@ -406,7 +392,6 @@ public class TransactionService {
 
     /**
      * Get daily account expense
-     * Original logic: Sum amounts for today and account transaction types
      */
     public String[] getDailyAccountExpense(User loggedUser) {
         String[] info = new String[2];
@@ -446,7 +431,6 @@ public class TransactionService {
 
     /**
      * Generate unique transaction reference ID
-     * Original logic: Generate "TXN-" + 7 random alphanumeric characters
      */
     public String generateRefID() {
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

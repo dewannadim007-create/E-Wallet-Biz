@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 /**
  * TransactionProfileController - User view their own transactions
- * ALL ORIGINAL LOGIC PRESERVED
  */
 @Controller
 public class TransactionProfileController {
@@ -31,13 +30,13 @@ public class TransactionProfileController {
             return "redirect:/login";
         }
 
-        // ORIGINAL LOGIC - Get user's transactions
+        
         List<Transaction> transactionList = transactionService.getTransactionList(loggedUser.getAccount(),
                 loggedUser.getMobile());
 
         model.addAttribute("transactionList", transactionList);
 
-        // ORIGINAL FILTER OPTIONS
+        
         model.addAttribute("filterOptions", new String[] {
                 "utility", "gas bill", "electricity bill", "bank to bank", "bank to wallet",
                 "wallet to wallet", "wallet to bank", "add to wallet", "recharge"
@@ -47,7 +46,7 @@ public class TransactionProfileController {
         return "transactionProfile";
     }
 
-    // ORIGINAL FILTER BY TYPE LOGIC
+    
     @GetMapping("/transaction-profile/filter")
     public String filter(@RequestParam("filterType") String filterBy,
             HttpSession session,
@@ -80,7 +79,7 @@ public class TransactionProfileController {
         return "transactionProfile";
     }
 
-    // ORIGINAL RESET LOGIC
+    
     @GetMapping("/transaction-profile/reset")
     public String reset(HttpSession session, Model model) {
         return showTransactionProfile(session, model);
