@@ -12,7 +12,7 @@
 
 <body>
     <div class="dashboard-container">
-        <!-- ADMIN SIDEBAR -->
+
         <nav class="sidebar">
             <div class="brand">
                 <i class="fas fa-shield-alt"></i> <span>ADMIN</span>
@@ -47,7 +47,7 @@
                 </div>
             </div>
 
-            <!-- TOP BAR -->
+
             <div class="top-bar">
                 <div class="top-bar-left">
                     <button id="sidebarToggle" class="toggle-btn" title="Toggle Sidebar"><i
@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="user-actions">
-                    <button class="icon-btn"><i class="fas fa-bell"></i></button>
+
                     <button id="themeToggle" class="icon-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
                     <div class="user-profile">
                         <div class="avatar">A</div>
@@ -88,8 +88,9 @@
                         <input type="hidden" name="mobile" th:value="${editUser.mobile}">
 
                         <div class="form-group">
-                            <label>Full Name</label>
-                            <input type="text" name="name" class="form-control" th:value="${editUser.name}" required>
+                            <label>Full Name (Read Only)</label>
+                            <input type="text" name="name" class="form-control" th:value="${editUser.name}" readonly
+                                style="background:#f1f5f9;">
                         </div>
 
                         <div class="form-group">
@@ -98,14 +99,15 @@
                         </div>
 
                         <div class="form-group">
-                            <label>National ID (NID)</label>
-                            <input type="text" name="nid" class="form-control" th:value="${editUser.nid}" required>
+                            <label>National ID (NID) (Read Only)</label>
+                            <input type="text" name="nid" class="form-control" th:value="${editUser.nid}" readonly
+                                style="background:#f1f5f9;">
                         </div>
 
                         <div class="form-group">
-                            <label>Date of Birth</label>
+                            <label>Date of Birth (Read Only)</label>
                             <input type="text" name="DOB" class="form-control" th:value="${editUser.DOB}"
-                                placeholder="dd-mm-yyyy" required>
+                                placeholder="dd-mm-yyyy" readonly style="background:#f1f5f9;">
                         </div>
 
                         <div class="form-group" style="grid-column: 1 / span 2;">

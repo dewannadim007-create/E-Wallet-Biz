@@ -32,12 +32,13 @@
                         <input type="password" name="password" class="form-control" placeholder="••••••••" required>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100 p-3 font-size-1">SECURE LOGIN</button>
+                    <button type="submit" class="btn btn-primary w-100 p-1 font-size-1">SECURE LOGIN</button>
                 </form>
 
                 <div class="text-center mt-1half">
-                    <a href="/login/to-registration" class="text-primary font-weight-600">Open a
-                        New Account</a>
+                    <p class="muted-text m-0 mb-0-5 font-size-0-9">New to E-Wallet?</p>
+                    <a href="/login/to-registration" class="btn btn-secondary w-100 p-0-5 font-size-0-9">Open a New
+                        Account</a>
                 </div>
 
                 <div th:if="${errorMessage}" class="alert-error mt-1 text-center border-radius-sm p-1">

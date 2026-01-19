@@ -12,7 +12,7 @@
 
 <body class="admin-theme">
     <div class="dashboard-container">
-        <!-- ADMIN SIDEBAR -->
+
         <nav class="sidebar">
             <div class="brand">
                 <i class="fas fa-shield-alt"></i> <span>ADMIN</span>
@@ -33,6 +33,12 @@
                 <li><a th:href="@{/admin/cheque-status}" class="active">
                         <i class="fas fa-money-check"></i> <span>Cheque Books</span>
                     </a></li>
+                <li><a th:href="@{/admin/branches}">
+                        <i class="fas fa-map-marker-alt"></i> <span>Locations</span>
+                    </a></li>
+                <li><a th:href="@{/admin/analytics}">
+                        <i class="fas fa-chart-line"></i> <span>Financial Reports</span>
+                    </a></li>
                 <li><a th:href="@{/admin/logout}" class="text-danger">
                         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
                     </a></li>
@@ -47,19 +53,19 @@
                 </div>
             </div>
 
-            <!-- TOP BAR -->
+
             <div class="top-bar">
                 <div class="top-bar-left">
                     <button id="sidebarToggle" class="toggle-btn" title="Toggle Sidebar"><i
                             class="fas fa-bars"></i></button>
-                    <h2 class="page-title">Request Queue</h2>
+                    <h2 class="page-title">CHEQUE BOOKS</h2>
                 </div>
 
                 <div class="top-bar-center">
                 </div>
 
                 <div class="user-actions">
-                    <button class="icon-btn"><i class="fas fa-bell"></i></button>
+
                     <button id="themeToggle" class="icon-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
                     <div class="user-profile">
                         <div class="avatar">A</div>

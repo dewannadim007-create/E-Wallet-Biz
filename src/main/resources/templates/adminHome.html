@@ -12,7 +12,7 @@
 
 <body class="admin-theme">
     <div class="dashboard-container">
-        <!-- ADMIN SIDEBAR -->
+
         <nav class="sidebar">
             <div class="brand">
                 <i class="fas fa-shield-alt"></i> <span>ADMIN</span>
@@ -46,7 +46,7 @@
         </nav>
 
         <main class="main-content">
-            <!-- MOBILE HEADER -->
+
             <div class="mobile-header">
                 <h3>ADMIN PANEL</h3>
                 <div class="mobile-actions">
@@ -54,8 +54,7 @@
                 </div>
             </div>
 
-            <!-- TOP BAR -->
-            <!-- TOP BAR -->
+
             <div class="top-bar">
                 <div class="top-bar-left">
                     <button id="sidebarToggle" class="toggle-btn" title="Toggle Sidebar"><i
@@ -64,12 +63,15 @@
                 </div>
 
                 <div class="top-bar-center">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" class="top-search-input" placeholder="Search system...">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-color);">
+                        <i class="far fa-clock"></i>
+                        <span id="liveDateTime"
+                            style="font-weight: 500; font-family: monospace; font-size: 1.1rem;">Loading...</span>
+                    </div>
                 </div>
 
                 <div class="user-actions">
-                    <button class="icon-btn"><i class="fas fa-bell"></i></button>
+
                     <button id="themeToggle" class="icon-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
                     <div class="user-profile">
                         <div class="avatar">A</div>
@@ -81,7 +83,7 @@
                 </div>
             </div>
 
-            <!-- PAGE CONTENT -->
+
             <section class="page-content">
                 <div class="section-card mb-1 d-flex justify-between align-center">
                     <div>
@@ -98,7 +100,7 @@
                     </div>
                 </div>
 
-                <h3 class="section-title">System Overview</h3>
+                <h3 class="section-title mb-1">System Overview</h3>
                 <div class="stats-grid">
                     <div class="stat-card stat-card-blue">
                         <div class="stat-icon" style="color: #1976d2;">

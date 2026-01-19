@@ -161,6 +161,19 @@ public class UserService {
     }
 
     /**
+     * Get user by account number
+     */
+    public User getUserByAccount(String account) {
+        try {
+            Query query = new Query(Criteria.where("account").is(account));
+            return mongoTemplate.findOne(query, User.class);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * Check if online wallet account exists
      * Note: Assuming wallet stored in User model
      */

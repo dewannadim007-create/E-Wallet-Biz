@@ -40,6 +40,11 @@ public class WBController {
         }
 
         model.addAttribute("user", loggedUser);
+
+        // Add available balance (Wallet)
+        double availableBalance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
+        model.addAttribute("availableBalance", availableBalance);
+
         return "wB";
     }
 
@@ -56,7 +61,6 @@ public class WBController {
             return "redirect:/login";
         }
 
-        
         boolean haveAccount = userService.checkAccount(receiverAccount);
         double senderBalance = UserService.getBalanceOnline(loggedUser.getMobile(), mongoTemplate);
         double remainingBalance = senderBalance - amount;

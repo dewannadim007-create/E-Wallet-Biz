@@ -12,7 +12,7 @@
 
 <body class="admin-theme">
     <div class="dashboard-container">
-        <!-- ADMIN SIDEBAR -->
+
         <nav class="sidebar">
             <div class="brand">
                 <i class="fas fa-shield-alt"></i> <span>ADMIN</span>
@@ -33,6 +33,12 @@
                 <li><a th:href="@{/admin/cheque-status}">
                         <i class="fas fa-money-check"></i> <span>Cheque Books</span>
                     </a></li>
+                <li><a th:href="@{/admin/branches}">
+                        <i class="fas fa-map-marker-alt"></i> <span>Locations</span>
+                    </a></li>
+                <li><a th:href="@{/admin/analytics}">
+                        <i class="fas fa-chart-line"></i> <span>Financial Reports</span>
+                    </a></li>
                 <li><a th:href="@{/admin/logout}" class="text-danger">
                         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
                     </a></li>
@@ -47,7 +53,7 @@
                 </div>
             </div>
 
-            <!-- TOP BAR -->
+
             <div class="top-bar">
                 <div class="top-bar-left">
                     <button id="sidebarToggle" class="toggle-btn" title="Toggle Sidebar"><i
@@ -60,7 +66,7 @@
                 </div>
 
                 <div class="user-actions">
-                    <button class="icon-btn"><i class="fas fa-bell"></i></button>
+
                     <button id="themeToggle" class="icon-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
                     <div class="user-profile">
                         <div class="avatar">A</div>
@@ -90,7 +96,7 @@
 
                 <div class="section-card p-0">
                     <div class="table-responsive">
-                        <table class="data-table">
+                        <table class="data-table user-table">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -105,7 +111,7 @@
                                 <tr th:each="user : ${users}" onclick="window.selectUser(this)"
                                     class="cursor-pointer hover-bg-light transition-bg">
                                     <td th:text="${user.name}">Name</td>
-                                    <td class="whitespace-nowrap" th:text="${user.mobile}">Mobile</td>
+                                    <td class="whitespace-nowrap mobile-cell" th:text="${user.mobile}">Mobile</td>
                                     <td th:text="${user.account}">Account</td>
                                     <td th:text="${user.nid}">NID</td>
                                     <td th:text="${user.DOB}">DOB</td>
@@ -120,7 +126,7 @@
                     </div>
                 </div>
 
-                <!-- SELECTED USER DETAIL VIEW -->
+
                 <div class="section-card user-detail-card mt-2" th:if="${selectedUser != null}">
                     <div class="d-flex justify-between align-center mb-2 flex-wrap gap-1">
                         <div class="d-flex align-center gap-1">
@@ -148,7 +154,7 @@
                     </div>
 
                     <div class="card-grid mb-2 grid-2">
-                        <!-- Balances -->
+
                         <div class="section-card bg-light p-1half">
                             <p class="m-0 mb-1 font-weight-500 opacity-0-9">Main Account Balance</p>
                             <h2 class="m-0 text-primary" th:text="'৳ ' + ${accountBalance}">৳ 0.00</h2>
@@ -162,7 +168,7 @@
                     </div>
 
                     <div class="card-grid grid-2">
-                        <!-- Personal Info -->
+
                         <div>
                             <h4 class="border-bottom pb-0-5 mb-1">Personal
                                 Details</h4>
@@ -186,7 +192,7 @@
                             </div>
                         </div>
 
-                        <!-- Recent Transactions -->
+
                         <div>
                             <h4 class="border-bottom pb-0-5 mb-1">Recent
                                 Transactions</h4>

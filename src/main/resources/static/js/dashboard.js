@@ -93,4 +93,27 @@ document.addEventListener('DOMContentLoaded', () => {
             toggleSidebar();
         });
     }
+
+    // === Live Date Time ===
+    function updateDateTime() {
+        const dateElement = document.getElementById('liveDateTime');
+        if (dateElement) {
+            const now = new Date();
+            // Format: Mon, Jan 01, 2026 12:00:00 PM
+            const options = {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            };
+            dateElement.innerText = now.toLocaleDateString('en-US', options);
+        }
+    }
+
+    // Run immediately and then every second
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
 });

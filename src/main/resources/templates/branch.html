@@ -16,106 +16,137 @@
 </head>
 
 <body>
-    <div class="dashboard-container" style="flex-direction: column; background: var(--bg-color);">
-
-        <!-- Header Section -->
-        <header class="page-header m-0">
-            <div class="header-wrapper">
-                <div>
-                    <h2 class="m-0" style="font-size: 1.75rem;"><i class="fas fa-map-marked-alt"></i> Find Locations
-                    </h2>
-                    <p style="margin: 5px 0 0; opacity: 0.9;">Locate the nearest Branch or ATM</p>
-                </div>
-                <a href="/first" class="btn back-btn-glass">
-                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+    <!-- Public Header -->
+    <header class="landing-hero"
+        style="padding: 1.5rem 1.5rem; clip-path: none; text-align: left; background: linear-gradient(135deg, #004d40 0%, #00251a 100%); box-shadow: 0 4px 20px rgba(0,0,0,0.2);">
+        <div class="nav-container"
+            style="padding-bottom: 0; margin: 0 auto; max-width: 1200px; display: flex; justify-content: space-between; align-items: center;">
+            <div class="logo">
+                <a href="/"
+                    style="color: white; text-decoration: none; font-size: 1.5rem; font-weight: 700; letter-spacing: 1px; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-wallet" style="color: #ffd700;"></i> E-WALLET BIZ
                 </a>
             </div>
-        </header>
+            <nav class="nav-links" style="display: flex; align-items: center;">
+                <a href="/faq"
+                    style="color: rgba(255,255,255,0.9); margin-left: 1.5rem; font-weight: 500; transition: color 0.3s; text-decoration: none;">FAQ</a>
+                <a href="/branch"
+                    style="color: #ffd700; margin-left: 1.5rem; font-weight: 500; text-decoration: none;">Locations</a>
+                <a href="/login" class="btn hover-scale"
+                    style="background: rgba(255,255,255,0.15); backdrop-filter: blur(5px); border: 1px solid rgba(255,255,255,0.2); color: white; border-radius: 50px; padding: 0.6rem 2rem; margin-left: 1.5rem; transition: all 0.3s ease; text-decoration: none;">Login</a>
+            </nav>
+        </div>
+    </header>
 
-        <section class="page-content locations-content">
+    <div class="dashboard-container"
+        style="background: var(--bg-color); min-height: calc(100vh - 80px); display: block;">
 
-            <!-- Search & Filter -->
-            <div class="section-card search-card">
-                <form action="/branch/search" method="get" class="search-form">
-                    <div class="search-input-group">
+        <div class="page-content locations-content" style="max-width: 1200px; margin: 0 auto; padding: 2rem 1rem;">
+
+            <div class="text-center mb-2">
+                <h1 style="color: var(--primary-color); margin-bottom: 0.5rem; font-weight: 700;">Find Us</h1>
+                <p class="muted-text" style="font-size: 1.1rem;">Locate our nearest Branch or ATM</p>
+            </div>
+
+            <!-- Search Card -->
+            <div class="section-card search-card mb-2"
+                style="max-width: 800px; margin: 0 auto 2rem; border-radius: 16px; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                <form action="/branch/search" method="get" class="search-form"
+                    style="display: flex; gap: 1rem; flex-wrap: wrap; padding: 0.5rem;">
+                    <div class="search-input-group"
+                        style="flex: 1; min-width: 250px; background: #f8f9fa; border-radius: 12px; padding: 0 1rem; display: flex; align-items: center; border: 2px solid transparent; transition: all 0.3s;">
                         <span class="input-group-text"><i class="fas fa-search"
                                 style="color: var(--text-secondary);"></i></span>
                         <input type="text" name="search" class="search-input-field"
-                            placeholder="Search by city, area, or branch name..." th:value="${searchTerm}">
+                            placeholder="City, area, or branch name..." th:value="${searchTerm}"
+                            style="width: 100%; border: none; outline: none; background: transparent; padding: 1rem 0.5rem; font-size: 1rem; color: var(--text-primary);">
                     </div>
-                    <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1.5rem;">
-                        <i class="fas fa-filter"></i> Find
+                    <button type="submit" class="btn btn-primary hover-scale"
+                        style="padding: 0 2rem; border-radius: 12px; font-weight: 600; box-shadow: 0 4px 15px rgba(0, 77, 64, 0.3);">
+                        <i class="fas fa-filter mr-0-5"></i> Find
                     </button>
-                    <a href="/branch" class="btn btn-secondary" style="padding: 0.8rem 1.5rem;" th:if="${searchTerm}">
-                        <i class="fas fa-undo"></i> Reset
+                    <a href="/branch" class="btn btn-secondary hover-scale"
+                        style="padding: 0 1.5rem; border-radius: 12px; display: flex; align-items: center; justify-content: center; background: #e0f2f1; color: var(--primary-color); border: none;"
+                        th:if="${searchTerm}">
+                        <i class="fas fa-undo mr-0-5"></i> Reset
                     </a>
                 </form>
             </div>
 
-            <!-- Map Section -->
-            <div class="map-container" th:if="${not #lists.isEmpty(branches)}">
+            <!-- Map Container -->
+            <div class="map-container" th:if="${not #lists.isEmpty(branches)}"
+                style="border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1); margin-bottom: 2.5rem; border: 4px solid white;">
                 <div id="map-loading" class="map-loading"><i class="fas fa-sync fa-spin"></i> Locating addresses...
                 </div>
-                <div id="map"></div>
+                <div id="map" style="height: 450px; width: 100%;"></div>
             </div>
 
-            <!-- Locations Grid -->
-            <div class="card-grid" th:if="${not #lists.isEmpty(branches)}">
-                <div class="location-card" th:each="branch : ${branches}" th:id="'card-' + ${branch.id}"
-                    th:data-lat="${branch.latitude != null ? branch.latitude : 0}"
+            <!-- Results Grid -->
+            <div class="card-grid" th:if="${not #lists.isEmpty(branches)}"
+                style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2rem;">
+                <div class="location-card section-card hover-scale" th:each="branch : ${branches}"
+                    th:id="'card-' + ${branch.id}" th:data-lat="${branch.latitude != null ? branch.latitude : 0}"
                     th:data-lng="${branch.longitude != null ? branch.longitude : 0}" th:data-name="${branch.name}"
-                    th:data-type="${branch.type}" th:data-location="${branch.location}">
+                    th:data-type="${branch.type}" th:data-location="${branch.location}"
+                    style="padding: 0; overflow: hidden; display: flex; flex-direction: column; height: 100%; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.05); transition: transform 0.3s ease, box-shadow 0.3s ease; border-radius: 16px;">
 
-                    <div class="location-type-badge">
-                        <span class="badge" th:classappend="${branch.type == 'ATM'} ? 'info' : 'success'">
+                    <div style="height: 160px; position: relative; overflow: hidden;">
+                        <img th:src="${branch.type == 'ATM'} ? '/images/atm.png' : '/images/branch.png'"
+                            alt="Location Type"
+                            style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;">
+
+                        <div
+                            style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%);">
+                        </div>
+
+                        <span class="badge" th:classappend="${branch.type == 'ATM'} ? 'info' : 'success'"
+                            style="position: absolute; top: 1rem; right: 1rem; z-index: 5; padding: 0.5rem 1rem; font-size: 0.85rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
                             <i class="fas"
                                 th:classappend="${branch.type == 'ATM'} ? 'fa-money-bill-wave' : 'fa-building'"></i>
-                            <span th:text="${branch.type}">Type</span>
+                            <span th:text="${branch.type}" class="ml-0-5">Type</span>
                         </span>
                     </div>
 
-                    <div class="card-image-header">
-                        <img th:src="@{/images/atm.png}" th:if="${branch.type == 'ATM'}" alt="ATM Location">
-                        <img th:src="@{/images/branch.png}" th:unless="${branch.type == 'ATM'}" alt="Branch Location">
-                    </div>
+                    <div style="padding: 1.5rem; flex: 1; display: flex; flex-direction: column; background: white;">
+                        <h3 th:text="${branch.name}"
+                            style="margin: 0 0 0.5rem; color: var(--primary-color); font-size: 1.25rem; font-weight: 600;">
+                            Branch Name
+                        </h3>
+                        <p class="muted-text"
+                            style="font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; flex: 1; display: flex; align-items: flex-start;">
+                            <i class="fas fa-map-marker-alt"
+                                style="color: var(--secondary-color); margin-top: 4px; margin-right: 10px; flex-shrink: 0;"></i>
+                            <span th:text="${branch.location}">Address Details Here</span>
+                        </p>
 
-                    <div class="card-content">
-                        <div>
-                            <h3 th:text="${branch.name}"
-                                style="margin: 0 0 0.5rem; color: var(--primary-color); font-size: 1.25rem;">Branch Name
-                            </h3>
-
-                            <p class="muted-text" style="font-size: 0.95rem; line-height: 1.5; margin-bottom: 1.5rem;">
-                                <i class="fas fa-location-arrow"
-                                    style="color: var(--primary-light); margin-right: 8px;"></i>
-                                <span th:text="${branch.location}">Address Details Here</span>
-                            </p>
-                        </div>
-
-                        <button class="btn btn-primary"
-                            style="width: 100%; background: transparent; color: var(--primary-color); border: 1px solid var(--primary-color); margin-top: auto;"
+                        <button class="btn btn-primary rounded-pill w-100"
+                            style="background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); font-weight: 600; padding: 0.6rem;"
                             th:data-address="${branch.location}" onclick="window.openDirections(this.dataset.address)">
-                            <i class="fas fa-directions"></i> Get Directions
+                            <i class="fas fa-directions mr-0-5"></i> Get Directions
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- No Results State -->
-            <div th:if="${#lists.isEmpty(branches)}" class="no-results-box">
-                <div class="no-results-icon">
-                    <i class="fas fa-search-location" style="font-size: 2.5rem;"></i>
+            <!-- No Results -->
+            <div th:if="${#lists.isEmpty(branches)}" class="text-center p-3"
+                style="background: white; border-radius: 12px; padding: 3rem;">
+                <div style="font-size: 3rem; color: #cbd5e1; margin-bottom: 1rem;">
+                    <i class="fas fa-search-location"></i>
                 </div>
                 <h3 style="margin-bottom: 0.5rem; color: var(--text-primary);">No locations found</h3>
                 <p class="muted-text" style="max-width: 400px; margin: 0 auto 1.5rem;">We couldn't find any branches or
-                    ATMs matching your search criteria. Try a different search term or view all locations.</p>
+                    ATMs matching your search criteria.</p>
                 <a href="/branch" class="btn btn-primary">View All Locations</a>
             </div>
 
-        </section>
+        </div>
     </div>
 
-    <!-- Leaflet JS -->
+    <footer style="background: #00251a; color: rgba(255, 255, 255, 0.6); padding: 3rem 1.5rem; text-align: center;">
+        <p>&copy; 2026 E-Wallet Biz Corp. All rights reserved.</p>
+    </footer>
+
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script src="/js/branch-locator.js"></script>

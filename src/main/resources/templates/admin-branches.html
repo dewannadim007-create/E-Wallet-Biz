@@ -12,7 +12,7 @@
 
 <body class="admin-theme">
     <div class="dashboard-container">
-        <!-- ADMIN SIDEBAR -->
+
         <nav class="sidebar">
             <div class="brand">
                 <i class="fas fa-shield-alt"></i> <span>ADMIN</span>
@@ -60,12 +60,11 @@
                 </div>
 
                 <div class="top-bar-center">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" class="top-search-input" placeholder="Search branches, ATMs...">
+
                 </div>
 
                 <div class="user-actions">
-                    <button class="icon-btn"><i class="fas fa-bell"></i></button>
+
                     <button id="themeToggle" class="icon-btn"><i class="fas fa-moon"></i></button>
                     <div class="user-profile">
                         <div class="avatar">A</div>
@@ -79,35 +78,33 @@
             </div>
 
             <section class="page-content">
-                <div class="section-card d-flex justify-between align-center gap-1">
-                    <div>
-                        <h2 class="m-0">Manage Locations</h2>
-                        <p class="muted-text">Add, edit, or remove branches and ATMs</p>
-                    </div>
-                    <a href="/admin/branches/add" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Add New
-                    </a>
-                </div>
-
                 <div class="section-card mb-1">
                     <form action="/admin/branches" method="get" class="admin-filter-bar">
-                        <input type="text" name="search" class="admin-search-input" placeholder="Search locations..."
-                            th:value="${searchTerm}">
+                        <input type="text" name="search" class="form-control admin-search-input"
+                            placeholder="Search locations..." th:value="${searchTerm}">
 
-                        <select name="type" class="admin-select-input">
+                        <select name="type" class="form-control admin-select-input" style="max-width: 200px;">
                             <option value="All">All Types</option>
                             <option value="Main" th:selected="${selectedType == 'Main'}">Main Branch</option>
                             <option value="Sub-Branch" th:selected="${selectedType == 'Sub-Branch'}">Sub-Branch</option>
                             <option value="Branch" th:selected="${selectedType == 'Branch'}">Branch</option>
                             <option value="ATM" th:selected="${selectedType == 'ATM'}">ATM</option>
+                            <option value="Agent Banking" th:selected="${selectedType == 'Agent Banking'}">Agent Banking
+                            </option>
                         </select>
 
-                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
-                        <a href="/admin/branches" class="btn btn-secondary">Clear</a>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Filter</button>
+                        <a href="/admin/branches" class="btn btn-secondary">Reset</a>
+
+                        <div style="flex-grow: 1;"></div> <!-- Spacer -->
+
+                        <a href="/admin/branches/add" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add New
+                        </a>
                     </form>
                 </div>
 
-                <!-- Alerts -->
+
                 <div th:if="${success}" class="section-card alert-success mb-1">
                     <i class="fas fa-check-circle"></i> <span th:text="${success}">Success message</span>
                 </div>

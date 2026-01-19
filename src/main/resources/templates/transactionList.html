@@ -12,7 +12,7 @@
 
 <body class="admin-theme">
     <div class="dashboard-container">
-        <!-- ADMIN SIDEBAR -->
+
         <nav class="sidebar">
             <div class="brand">
                 <i class="fas fa-shield-alt"></i> <span>ADMIN</span>
@@ -36,6 +36,9 @@
                 <li><a th:href="@{/admin/branches}">
                         <i class="fas fa-map-marker-alt"></i> <span>Locations</span>
                     </a></li>
+                <li><a th:href="@{/admin/analytics}">
+                        <i class="fas fa-chart-line"></i> <span>Financial Reports</span>
+                    </a></li>
                 <li><a th:href="@{/admin/logout}" class="text-danger">
                         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
                     </a></li>
@@ -50,7 +53,7 @@
                 </div>
             </div>
 
-            <!-- TOP BAR -->
+
             <div class="top-bar">
                 <div class="top-bar-left">
                     <button id="sidebarToggle" class="toggle-btn" title="Toggle Sidebar"><i
@@ -63,7 +66,7 @@
                 </div>
 
                 <div class="user-actions">
-                    <button class="icon-btn"><i class="fas fa-bell"></i></button>
+
                     <button id="themeToggle" class="icon-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
                     <div class="user-profile">
                         <div class="avatar">A</div>
@@ -78,68 +81,44 @@
             <section class="page-content">
 
 
-                <div class="section-card mb-2 border-none shadow-sm">
-                    <form action="/admin/transactions" method="get" class="filter-form">
+                <div class="section-card mb-1">
+                    <form action="/admin/transactions" method="get" class="admin-filter-bar">
+                        <input type="text" name="search" class="form-control admin-search-input"
+                            placeholder="RefID, Sender..." th:value="${searchTerm}">
 
-                        <!-- Search -->
-                        <div class="filter-group-search">
-                            <label class="muted-text font-weight-600 mb-1 d-block font-size-0-9">Search</label>
-                            <div class="input-group m-0">
-                                <span class="input-group-text"><i class="fas fa-search"></i></span>
-                                <input type="text" name="search" class="form-control m-0 border-none"
-                                    placeholder="RefID, Sender, Receiver..." th:value="${searchTerm}">
-                            </div>
-                        </div>
+                        <select name="type" class="form-control admin-select-input">
+                            <option value="All">All Types</option>
+                            <option value="add to wallet" th:selected="${selectedType == 'add to wallet'}">Add Money
+                            </option>
+                            <option value="send money" th:selected="${selectedType == 'send money'}">Send Money</option>
+                            <option value="wallet to wallet" th:selected="${selectedType == 'wallet to wallet'}">Wallet
+                                Transfer</option>
+                            <option value="wallet to bank" th:selected="${selectedType == 'wallet to bank'}">Wallet to
+                                Bank</option>
+                            <option value="mobile recharge" th:selected="${selectedType == 'mobile recharge'}">Recharge
+                            </option>
+                            <option value="utility" th:selected="${selectedType == 'utility'}">Utility Bill</option>
+                            <option value="bank to bank" th:selected="${selectedType == 'bank to bank'}">Bank to Bank
+                            </option>
+                            <option value="bank to wallet" th:selected="${selectedType == 'bank to wallet'}">Bank to
+                                Wallet</option>
+                        </select>
 
-                        <!-- Type Filter -->
-                        <div class="filter-group-select">
-                            <label class="muted-text font-weight-600 mb-1 d-block font-size-0-9">Transaction
-                                Type</label>
-                            <select name="type" class="form-control m-0 bg-transparent">
-                                <option value="All">All Types</option>
-                                <option value="add to wallet" th:selected="${selectedType == 'add to wallet'}">Add Money
-                                </option>
-                                <option value="send money" th:selected="${selectedType == 'send money'}">Send Money
-                                </option>
-                                <option value="wallet to wallet" th:selected="${selectedType == 'wallet to wallet'}">
-                                    Wallet Transfer</option>
-                                <option value="wallet to bank" th:selected="${selectedType == 'wallet to bank'}">Wallet
-                                    to Bank</option>
-                                <option value="mobile recharge" th:selected="${selectedType == 'mobile recharge'}">
-                                    Recharge</option>
-                                <option value="utility" th:selected="${selectedType == 'utility'}">Utility Bill</option>
-                                <option value="bank to bank" th:selected="${selectedType == 'bank to bank'}">Bank to
-                                    Bank</option>
-                                <option value="bank to wallet" th:selected="${selectedType == 'bank to wallet'}">Bank to
-                                    Wallet</option>
-                            </select>
-                        </div>
+                        <select name="days" class="form-control admin-select-input">
+                            <option value="All">All Time</option>
+                            <option value="1" th:selected="${selectedDays == '1'}">Today</option>
+                            <option value="7" th:selected="${selectedDays == '7'}">Last 7 Days</option>
+                            <option value="30" th:selected="${selectedDays == '30'}">Last 30 Days</option>
+                        </select>
 
-                        <!-- Time Filter -->
-                        <div class="filter-group-select min-w-150">
-                            <label class="muted-text font-weight-600 mb-1 d-block font-size-0-9">Time
-                                Period</label>
-                            <select name="days" class="form-control m-0 bg-transparent">
-                                <option value="All">All Time</option>
-                                <option value="1" th:selected="${selectedDays == '1'}">Today</option>
-                                <option value="7" th:selected="${selectedDays == '7'}">Last 7 Days</option>
-                                <option value="30" th:selected="${selectedDays == '30'}">Last 30 Days</option>
-                            </select>
-                        </div>
-
-                        <!-- Buttons -->
-                        <div class="d-flex gap-0-5">
-                            <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i>
-                                Filter</button>
-                            <a href="/admin/transactions" class="btn btn-secondary"><i class="fas fa-undo"></i>
-                                Reset</a>
-                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-filter"></i> Filter</button>
+                        <a href="/admin/transactions" class="btn btn-secondary">Reset</a>
                     </form>
                 </div>
 
                 <div class="section-card p-0">
                     <div class="table-responsive">
-                        <table class="data-table">
+                        <table class="data-table cheque-table">
                             <thead>
                                 <tr>
                                     <th>RefID</th>
@@ -151,7 +130,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="transaction : ${transactions}">
+                                <tr th:each="transaction : ${transactions}" class="hover-bg-light transition-bg">
                                     <td class="text-secondary font-mono" th:text="${transaction.ref}">
                                         RefID</td>
                                     <td th:text="${transaction.date}">Date</td>

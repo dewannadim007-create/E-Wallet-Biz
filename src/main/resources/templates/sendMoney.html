@@ -12,7 +12,7 @@
 
 <body>
     <div class="dashboard-container">
-        <!-- INLINED SIDEBAR -->
+
         <nav class="sidebar">
             <div class="brand">
                 <i class="fas fa-university"></i> <span>E-WALLET</span>
@@ -33,8 +33,14 @@
                 <li><a th:href="@{/home/to-statement}">
                         <i class="fas fa-file-invoice-dollar"></i> <span>Statement</span>
                     </a></li>
+                <li><a th:href="@{/home/to-history}">
+                        <i class="fas fa-history"></i> <span>Transaction History</span>
+                    </a></li>
                 <li><a th:href="@{/home/to-menu}">
                         <i class="fas fa-cog"></i> <span>Settings</span>
+                    </a></li>
+                <li><a th:href="@{/chequebook}">
+                        <i class="fas fa-money-check"></i> <span>Cheque Book</span>
                     </a></li>
                 <li><a th:href="@{/logout}" style="color: var(--danger);">
                         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
@@ -43,7 +49,7 @@
         </nav>
 
         <main class="main-content">
-            <!-- INLINED MOBILE HEADER -->
+
             <div class="mobile-header">
                 <h3>E-WALLET</h3>
                 <div class="mobile-actions">
@@ -51,8 +57,7 @@
                 </div>
             </div>
 
-            <!-- INLINED TOP BAR -->
-            <!-- INLINED TOP BAR -->
+
             <div class="top-bar">
                 <div class="top-bar-left">
                     <button id="sidebarToggle" class="toggle-btn" title="Toggle Sidebar"><i
@@ -64,8 +69,7 @@
                 </div>
 
                 <div class="user-actions">
-                    <button class="icon-btn" onclick="window.location.href='/notifications'"><i
-                            class="fas fa-bell"></i></button>
+
                     <button id="themeToggle" class="icon-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
                     <div class="user-profile" onclick="window.location.href='/user-profile'">
                         <div class="avatar"
@@ -78,33 +82,66 @@
                 </div>
             </div>
 
-            <!-- PAGE CONTENT -->
-            <section class="page-content">
 
+            <section class="page-content" style="align-items: flex-start;">
 
-                <div class="actions-grid">
-                    <div class="action-card" onclick="window.location.href='/send-money/to-bw'">
-                        <i class="fas fa-wallet icon-green"></i>
-                        <span>Bank to Wallet</span>
-                        <small class="small-desc">Add money to App</small>
+                <div class="d-grid gap-1half w-100"
+                    style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                    <!-- Bank to Wallet -->
+                    <div class="section-card cursor-pointer hover-scale transition-all d-flex flex-column align-center text-center p-2"
+                        onclick="window.location.href='/send-money/to-bw'"
+                        style="border-top: 4px solid var(--success);">
+                        <div class="rounded-circle mb-1 d-flex align-center justify-center p-1"
+                            style="width: 70px; height: 70px; background: rgba(46, 204, 113, 0.1); color: var(--success); font-size: 2rem;">
+                            <i class="fas fa-wallet"></i>
+                        </div>
+                        <h3 class="m-0 mb-0-5">Bank to Wallet</h3>
+                        <p class="muted-text m-0 mb-1" style="font-size: 0.9rem;">Add money to App from Bank</p>
+                        <button class="btn btn-sm rounded-pill mt-auto"
+                            style="background: var(--success); color: white;">Transfer <i
+                                class="fas fa-arrow-right ml-0-5"></i></button>
                     </div>
 
-                    <div class="action-card" onclick="window.location.href='/send-money/to-bb'">
-                        <i class="fas fa-university icon-blue"></i>
-                        <span>Bank to Bank</span>
-                        <small class="small-desc">Inter-bank transfer</small>
+                    <!-- Bank to Bank -->
+                    <div class="section-card cursor-pointer hover-scale transition-all d-flex flex-column align-center text-center p-2"
+                        onclick="window.location.href='/send-money/to-bb'"
+                        style="border-top: 4px solid var(--primary-color);">
+                        <div class="rounded-circle mb-1 d-flex align-center justify-center p-1"
+                            style="width: 70px; height: 70px; background: rgba(0, 77, 64, 0.1); color: var(--primary-color); font-size: 2rem;">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h3 class="m-0 mb-0-5">Bank to Bank</h3>
+                        <p class="muted-text m-0 mb-1" style="font-size: 0.9rem;">Inter-bank money transfer</p>
+                        <button class="btn btn-primary btn-sm rounded-pill mt-auto">Transfer <i
+                                class="fas fa-arrow-right ml-0-5"></i></button>
                     </div>
 
-                    <div class="action-card" onclick="window.location.href='/send-money/to-ww'">
-                        <i class="fas fa-exchange-alt icon-purple"></i>
-                        <span>Wallet to Wallet</span>
-                        <small class="small-desc">Instant P2P Transfer</small>
+                    <!-- Wallet to Wallet -->
+                    <div class="section-card cursor-pointer hover-scale transition-all d-flex flex-column align-center text-center p-2"
+                        onclick="window.location.href='/send-money/to-ww'" style="border-top: 4px solid #9b59b6;">
+                        <div class="rounded-circle mb-1 d-flex align-center justify-center p-1"
+                            style="width: 70px; height: 70px; background: rgba(155, 89, 182, 0.1); color: #9b59b6; font-size: 2rem;">
+                            <i class="fas fa-exchange-alt"></i>
+                        </div>
+                        <h3 class="m-0 mb-0-5">Wallet to Wallet</h3>
+                        <p class="muted-text m-0 mb-1" style="font-size: 0.9rem;">Instant P2P Transfer</p>
+                        <button class="btn btn-sm rounded-pill mt-auto"
+                            style="background: #9b59b6; color: white;">Transfer <i
+                                class="fas fa-arrow-right ml-0-5"></i></button>
                     </div>
 
-                    <div class="action-card" onclick="window.location.href='/send-money/to-wb'">
-                        <i class="fas fa-money-check-alt icon-red"></i>
-                        <span>Wallet to Bank</span>
-                        <small class="small-desc">Withdraw to Account</small>
+                    <!-- Wallet to Bank -->
+                    <div class="section-card cursor-pointer hover-scale transition-all d-flex flex-column align-center text-center p-2"
+                        onclick="window.location.href='/send-money/to-wb'" style="border-top: 4px solid var(--danger);">
+                        <div class="rounded-circle mb-1 d-flex align-center justify-center p-1"
+                            style="width: 70px; height: 70px; background: rgba(231, 76, 60, 0.1); color: var(--danger); font-size: 2rem;">
+                            <i class="fas fa-money-check-alt"></i>
+                        </div>
+                        <h3 class="m-0 mb-0-5">Wallet to Bank</h3>
+                        <p class="muted-text m-0 mb-1" style="font-size: 0.9rem;">Withdraw funds to Account</p>
+                        <button class="btn btn-sm rounded-pill mt-auto"
+                            style="background: var(--danger); color: white;">Withdraw <i
+                                class="fas fa-arrow-right ml-0-5"></i></button>
                     </div>
                 </div>
             </section>

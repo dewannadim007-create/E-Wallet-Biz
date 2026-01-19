@@ -12,7 +12,7 @@
 
 <body>
     <div class="dashboard-container">
-        <!-- INLINED SIDEBAR -->
+
         <nav class="sidebar">
             <div class="brand">
                 <i class="fas fa-university"></i> <span>E-WALLET</span>
@@ -39,6 +39,9 @@
                 <li><a th:href="@{/home/to-menu}">
                         <i class="fas fa-cog"></i> <span>Settings</span>
                     </a></li>
+                <li><a th:href="@{/chequebook}">
+                        <i class="fas fa-money-check"></i> <span>Cheque Book</span>
+                    </a></li>
                 <li><a th:href="@{/logout}" style="color: var(--danger);">
                         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
                     </a></li>
@@ -46,7 +49,7 @@
         </nav>
 
         <main class="main-content">
-            <!-- INLINED MOBILE HEADER -->
+
             <div class="mobile-header">
                 <h3>E-WALLET</h3>
                 <div class="mobile-actions">
@@ -54,8 +57,7 @@
                 </div>
             </div>
 
-            <!-- INLINED TOP BAR -->
-            <!-- INLINED TOP BAR -->
+
             <div class="top-bar">
                 <div class="top-bar-left">
                     <button id="sidebarToggle" class="toggle-btn" title="Toggle Sidebar"><i
@@ -67,8 +69,7 @@
                 </div>
 
                 <div class="user-actions">
-                    <button class="icon-btn" onclick="window.location.href='/notifications'"><i
-                            class="fas fa-bell"></i></button>
+
                     <button id="themeToggle" class="icon-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
                     <div class="user-profile" onclick="window.location.href='/user-profile'">
                         <div class="avatar"
@@ -81,10 +82,10 @@
                 </div>
             </div>
 
-            <!-- PAGE CONTENT -->
+
             <section class="page-content">
 
-                <!-- 1. LIMITS SECTION (Existing) -->
+
                 <div class="section-card">
                     <h3 class="mt-0">Usage Limits</h3>
                     <div class="table-responsive">

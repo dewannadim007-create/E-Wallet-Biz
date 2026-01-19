@@ -42,15 +42,17 @@ public class UserListController {
             return "redirect:/login";
         }
 
-        
         List<User> userList = userService.getUserList();
+        // Filter out ADMIN users from the list
+        userList = userList.stream()
+                .filter(u -> !"ADMIN".equals(u.getUserRole()))
+                .collect(Collectors.toList());
 
         model.addAttribute("users", userList);
         model.addAttribute("searchTerm", ""); // Initialize to avoid null
         return "userList";
     }
 
-    
     @GetMapping("/admin/users/search")
     public String startSearch(@RequestParam("search") String search,
             HttpSession session,
@@ -65,6 +67,7 @@ public class UserListController {
 
         // EXACT SAME FILTER LOGIC
         List<User> filteredList = userList.stream()
+                .filter(user -> !"ADMIN".equals(user.getUserRole())) // Exclude Admins
                 .filter(user -> user.getAccount().toLowerCase().contains(searchLower) ||
                         user.getName().toLowerCase().contains(searchLower) ||
                         user.getNid().contains(searchLower) ||
@@ -76,7 +79,6 @@ public class UserListController {
         return "userList";
     }
 
-    
     // ENHANCED DETAIL VIEW (was getUserBalance)
     @GetMapping("/admin/users/balance")
     public String getUserBalance(@RequestParam("mobile") String mobile,
@@ -121,6 +123,9 @@ public class UserListController {
 
         // Keep the list populated
         List<User> userList = userService.getUserList();
+        userList = userList.stream()
+                .filter(u -> !"ADMIN".equals(u.getUserRole()))
+                .collect(Collectors.toList());
         model.addAttribute("users", userList);
         model.addAttribute("searchTerm", "");
 
@@ -131,7 +136,7 @@ public class UserListController {
     @GetMapping("/admin/user/edit")
     public String showEditUser(@RequestParam("mobile") String mobile, HttpSession session, Model model) {
         if (session.getAttribute("loggedUser") == null) {
-            return "redirect:/admin/login";
+            return "redirect:/login";
         }
 
         Query query = new Query(Criteria.where("mobile").is(mobile));
@@ -142,7 +147,7 @@ public class UserListController {
         }
 
         model.addAttribute("editUser", userToEdit);
-        return "editUser"; // We need to create this template
+        return "editUser";
     }
 
     @PostMapping("/admin/user/update")
@@ -151,10 +156,8 @@ public class UserListController {
             Query query = new Query(Criteria.where("mobile").is(user.getMobile()));
             Update update = new Update()
                     // ONLY allow updating these specific fields
-                    .set("name", user.getName())
+                    // Name, NID, DOB are restricted
                     .set("email", user.getEmail())
-                    .set("nid", user.getNid())
-                    .set("DOB", user.getDOB())
                     .set("address", user.getAddress());
             // Mobile is the key, so it can't be changed here easily without breaking the
             // key reference
@@ -170,12 +173,10 @@ public class UserListController {
         return "redirect:/admin/users";
     }
 
-    
     @PostMapping("/admin/api/users/delete")
     public String delete(@RequestParam("mobile") String mobile,
             RedirectAttributes redirectAttributes) {
 
-        
         userService.deleteUser(mobile);
 
         redirectAttributes.addFlashAttribute("warningMessage", "Deleted");

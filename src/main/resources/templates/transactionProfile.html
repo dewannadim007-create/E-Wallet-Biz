@@ -21,7 +21,7 @@
 
 <body>
     <div class="dashboard-container">
-        <!-- INLINED SIDEBAR -->
+
         <nav class="sidebar">
             <div class="brand">
                 <i class="fas fa-university"></i> <span>E-WALLET</span>
@@ -42,8 +42,14 @@
                 <li><a th:href="@{/home/to-statement}">
                         <i class="fas fa-file-invoice-dollar"></i> <span>Statement</span>
                     </a></li>
-                <li><a th:href="@{/home/to-menu}" class="active">
+                <li><a th:href="@{/home/to-history}" class="active">
+                        <i class="fas fa-history"></i> <span>Transaction History</span>
+                    </a></li>
+                <li><a th:href="@{/home/to-menu}">
                         <i class="fas fa-cog"></i> <span>Settings</span>
+                    </a></li>
+                <li><a th:href="@{/chequebook}">
+                        <i class="fas fa-money-check"></i> <span>Cheque Book</span>
                     </a></li>
                 <li><a th:href="@{/logout}" style="color: var(--danger);">
                         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
@@ -52,7 +58,7 @@
         </nav>
 
         <main class="main-content">
-            <!-- INLINED MOBILE HEADER -->
+
             <div class="mobile-header">
                 <h3>E-WALLET</h3>
                 <div class="mobile-actions">
@@ -60,7 +66,7 @@
                 </div>
             </div>
 
-            <!-- INLINED TOP BAR -->
+
             <div class="top-bar">
                 <button id="sidebarToggle" class="toggle-btn" title="Toggle Sidebar"><i
                         class="fas fa-bars"></i></button>
@@ -68,7 +74,7 @@
                 <button id="themeToggle" class="toggle-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
             </div>
 
-            <!-- PAGE CONTENT -->
+
             <section class="page-content">
                 <div class="page-header" style="display:flex; justify-content:space-between; align-items:center;">
                     <div>
@@ -113,7 +119,7 @@
                 </div>
 
                 <div class="text-center" style="margin-top:1rem;">
-                    <a href="/home/to-menu" class="muted-text">Back to Settings</a>
+                    <a href="/home" class="muted-text">Back to Dashboard</a>
                 </div>
             </section>
         </main>

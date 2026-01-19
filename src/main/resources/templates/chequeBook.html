@@ -12,7 +12,7 @@
 
 <body>
     <div class="dashboard-container">
-        <!-- INLINED SIDEBAR -->
+
         <nav class="sidebar">
             <div class="brand">
                 <i class="fas fa-university"></i> <span>E-WALLET</span>
@@ -33,20 +33,23 @@
                 <li><a th:href="@{/home/to-statement}">
                         <i class="fas fa-file-invoice-dollar"></i> <span>Statement</span>
                     </a></li>
+                <li><a th:href="@{/home/to-history}">
+                        <i class="fas fa-history"></i> <span>Transaction History</span>
+                    </a></li>
                 <li><a th:href="@{/home/to-menu}">
                         <i class="fas fa-cog"></i> <span>Settings</span>
                     </a></li>
                 <li><a th:href="@{/chequebook}" class="active">
                         <i class="fas fa-money-check"></i> <span>Cheque Book</span>
                     </a></li>
-                <li><a th:href="@{/logout}" class="text-danger">
+                <li><a th:href="@{/logout}" style="color: var(--danger);">
                         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
                     </a></li>
             </ul>
         </nav>
 
         <main class="main-content">
-            <!-- INLINED MOBILE HEADER -->
+
             <div class="mobile-header">
                 <h3>CHEQUE BOOK</h3>
                 <div class="mobile-actions">
@@ -54,8 +57,7 @@
                 </div>
             </div>
 
-            <!-- INLINED TOP BAR -->
-            <!-- INLINED TOP BAR -->
+
             <div class="top-bar">
                 <div class="top-bar-left">
                     <button id="sidebarToggle" class="toggle-btn" title="Toggle Sidebar"><i
@@ -67,8 +69,7 @@
                 </div>
 
                 <div class="user-actions">
-                    <button class="icon-btn" onclick="window.location.href='/notifications'"><i
-                            class="fas fa-bell"></i></button>
+
                     <button id="themeToggle" class="icon-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
                     <div class="user-profile" onclick="window.location.href='/user-profile'">
                         <div class="avatar custom-color">U</div>
@@ -80,101 +81,129 @@
                 </div>
             </div>
 
-            <section class="page-content">
-                <div class="section-card container-sm">
+            <section class="page-content center-content" style="max-width: 900px; margin: 0 auto;">
 
-                    <div class="section-card cheque-profile-card">
-                        <div class="d-flex justify-between">
-                            <span class="muted-text">Account Name</span>
-                            <span class="font-weight-600" th:text="${name}">User Name</span>
-                        </div>
-                        <div class="d-flex justify-between">
-                            <span class="muted-text">Bank Account</span>
-                            <span class="font-weight-600" th:text="${account}">123456789</span>
-                        </div>
-                        <div class="d-flex justify-between">
-                            <span class="muted-text">Mobile</span>
-                            <span class="font-weight-600" th:text="${mobile}">01700000000</span>
-                        </div>
-                    </div>
+                <div class="d-grid gap-1half" style="grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));">
 
-                    <form action="/api/chequebook/apply" method="post" class="card-grid form-grid-2">
-                        <div class="form-group">
-                            <label>Pages per Book</label>
-                            <select name="page" class="form-control" required>
-                                <option value="">Select Pages</option>
-                                <option th:each="option : ${pageOptions}" th:value="${option}"
-                                    th:text="${option + ' Pages'}">10 Pages</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Quantity</label>
-                            <select name="checkNumber" class="form-control" required>
-                                <option value="">Select Quantity</option>
-                                <option th:each="option : ${checkNumberOptions}" th:value="${option}"
-                                    th:text="${option + ' Book(s)'}">1 Book(s)</option>
-                            </select>
+                    <!-- Request Form Section -->
+                    <div class="section-card h-100">
+                        <div class="d-flex justify-between align-center mb-1half border-bottom pb-0-5">
+                            <h3 class="m-0"><i class="fas fa-money-check mr-0-5 text-primary"></i>Request Cheque Book
+                            </h3>
                         </div>
 
-                        <div class="form-group col-span-2">
-                            <label>Confirm Password</label>
-                            <input type="password" name="password" class="form-control" required>
+                        <!-- Account Summary Mini-Card -->
+                        <div class="p-1 rounded bg-light mb-1half border-left-primary">
+                            <div class="d-flex justify-between mb-0-25">
+                                <span class="muted-text font-size-0-9">Account Name</span>
+                                <span class="font-weight-600" th:text="${name}">User Name</span>
+                            </div>
+                            <div class="d-flex justify-between">
+                                <span class="muted-text font-size-0-9">Account Number</span>
+                                <span class="font-weight-600" th:text="${account}">123456789</span>
+                            </div>
                         </div>
 
-                        <div class="col-span-2">
-                            <button type="submit" class="btn btn-primary w-100">
-                                Submit Request <i class="fas fa-paper-plane"></i>
+                        <form action="/api/chequebook/apply" method="post">
+                            <div class="form-group mb-1">
+                                <label class="d-block font-weight-500 mb-0-5">Pages per Book</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-copy"></i></span>
+                                    <select name="page" class="form-control" required
+                                        style="border-radius: 0 5px 5px 0;">
+                                        <option value="">Select Pages</option>
+                                        <option th:each="option : ${pageOptions}" th:value="${option}"
+                                            th:text="${option + ' Pages'}">10 Pages</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-1">
+                                <label class="d-block font-weight-500 mb-0-5">Quantity</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-layer-group"></i></span>
+                                    <select name="checkNumber" class="form-control" required
+                                        style="border-radius: 0 5px 5px 0;">
+                                        <option value="">Select Quantity</option>
+                                        <option th:each="option : ${checkNumberOptions}" th:value="${option}"
+                                            th:text="${option + ' Book(s)'}">1 Book(s)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-1half">
+                                <label class="d-block font-weight-500 mb-0-5">Confirm Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" name="password" class="form-control"
+                                        placeholder="Enter your password" required style="border-radius: 0 5px 5px 0;">
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary w-100 py-0-75 shadow-sm hover-scale">
+                                Submit Request <i class="fas fa-paper-plane ml-0-5"></i>
                             </button>
-                        </div>
-                    </form>
+                        </form>
 
-                    <div class="section-card mt-1 bg-success-light" th:if="${successMessage}">
-                        <span class="badge-success-solid">Success</span>
-                        <p class="m-0 mt-0-25" th:text="${successMessage}">Request
-                            submitted</p>
-                    </div>
-                    <div class="section-card mt-1 bg-danger-light" th:if="${errorMessage}">
-                        <span class="badge-danger-solid">Error</span>
-                        <p class="m-0 mt-0-25" th:text="${errorMessage}">There was a
-                            problem</p>
+                        <div class="mt-1" th:if="${successMessage}">
+                            <div class="alert alert-success d-flex align-center p-0-75 rounded">
+                                <i class="fas fa-check-circle mr-0-5"></i>
+                                <span th:text="${successMessage}">Success</span>
+                            </div>
+                        </div>
+                        <div class="mt-1" th:if="${errorMessage}">
+                            <div class="alert alert-danger d-flex align-center p-0-75 rounded">
+                                <i class="fas fa-exclamation-circle mr-0-5"></i>
+                                <span th:text="${errorMessage}">Error</span>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- History Section -->
-                    <div class="section-card cheque-history-card">
-                        <h4 class="mb-1 text-color-primary">Application History</h4>
+                    <div class="section-card h-100">
+                        <div class="d-flex justify-between align-center mb-1half border-bottom pb-0-5">
+                            <h3 class="m-0"><i class="fas fa-history mr-0-5 text-secondary"></i>Application History</h3>
+                        </div>
+
                         <div class="table-responsive">
                             <table class="data-table w-100">
                                 <thead>
                                     <tr>
-                                        <th>Date</th>
-                                        <th>Pages</th>
-                                        <th>Qty</th>
-                                        <th>Status</th>
+                                        <th class="font-size-0-9">Date</th>
+                                        <th class="font-size-0-9">Details</th>
+                                        <th class="font-size-0-9 text-right">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr th:each="item : ${history}">
-                                        <td th:text="${item.date}">Date</td>
-                                        <td th:text="${item.pages} + ' Pages'">10 Pages</td>
-                                        <td th:text="${item.quantity} + ' Book(s)'">1 Book</td>
+                                    <tr th:each="item : ${history}" class="hover-bg-light">
                                         <td>
+                                            <span class="d-block font-weight-500 font-size-0-9"
+                                                th:text="${item.date}">Date</span>
+                                        </td>
+                                        <td>
+                                            <span class="d-block font-weight-500" th:text="${item.pages} + ' Pages'">10
+                                                Pages</span>
+                                            <span class="muted-text font-size-0-8"
+                                                th:text="${item.quantity} + ' Book(s)'">1 Book</span>
+                                        </td>
+                                        <td class="text-right">
                                             <span class="badge"
-                                                th:classappend="${item.status == 'Success' ? 'badge-success' : (item.status == 'Declined' ? 'badge-error' : (item.status == 'Pending' ? 'badge-info' : 'badge-secondary'))}"
-                                                th:text="${item.status}">Pending</span>
+                                                th:classappend="${item.status == 'Success' ? 'badge-success' : (item.status == 'Declined' ? 'badge-warn' : (item.status == 'Pending' ? 'badge-info' : 'badge-secondary'))}"
+                                                th:text="${item.status}"
+                                                style="font-size: 0.8rem; padding: 0.25em 0.6em;">Pending</span>
                                         </td>
                                     </tr>
                                     <tr th:if="${#lists.isEmpty(history)}">
-                                        <td colspan="4" class="text-center muted-text">No
-                                            previous applications.</td>
+                                        <td colspan="3" class="text-center py-2 muted-text">
+                                            <i class="fas fa-inbox font-size-2 opacity-0-5 mb-0-5 d-block"></i>
+                                            No previous applications found.
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <div class="text-center mt-1">
-                        <a href="/home" class="muted-text">Back to Home</a>
-                    </div>
                 </div>
             </section>
         </main>

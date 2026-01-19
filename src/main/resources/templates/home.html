@@ -12,7 +12,7 @@
 
 <body>
     <div class="dashboard-container">
-        <!-- INLINED SIDEBAR -->
+
         <nav class="sidebar">
             <div class="brand">
                 <i class="fas fa-university"></i> <span>E-WALLET</span>
@@ -49,7 +49,7 @@
         </nav>
 
         <main class="main-content">
-            <!-- INLINED MOBILE HEADER -->
+
             <div class="mobile-header">
                 <h3>E-WALLET</h3>
                 <div class="mobile-actions">
@@ -57,8 +57,7 @@
                 </div>
             </div>
 
-            <!-- INLINED TOP BAR -->
-            <!-- INLINED TOP BAR -->
+
             <div class="top-bar">
                 <div class="top-bar-left">
                     <button id="sidebarToggle" class="toggle-btn" title="Toggle Sidebar"><i
@@ -67,13 +66,15 @@
                 </div>
 
                 <div class="top-bar-center">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" class="top-search-input" placeholder="Search transactions...">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; color: var(--text-color);">
+                        <i class="far fa-clock"></i>
+                        <span id="liveDateTime"
+                            style="font-weight: 500; font-family: monospace; font-size: 1.1rem;">Loading...</span>
+                    </div>
                 </div>
 
                 <div class="user-actions">
-                    <button class="icon-btn" onclick="window.location.href='/notifications'"><i
-                            class="fas fa-bell"></i></button>
+
                     <button id="themeToggle" class="icon-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
                     <div class="user-profile" onclick="window.location.href='/user-profile'">
                         <div class="avatar"
@@ -86,7 +87,7 @@
                 </div>
             </div>
 
-            <!-- PAGE CONTENT -->
+
             <section class="page-content">
                 <div class="section-card d-flex justify-between gap-1 align-center">
                     <div>
@@ -112,18 +113,22 @@
                 </div>
 
                 <div class="dashboard-grid">
-                    <!-- Recent Activity Section -->
+
                     <div class="section-card recent-activity-card">
-                        <h3 class="mt-0 mb-1">Recent Activity</h3>
+                        <div class="d-flex justify-between align-center mb-1">
+                            <h3 class="m-0">Recent Activity</h3>
+                            <a href="/history" class="text-primary font-size-0-9 font-weight-600">View All</a>
+                        </div>
 
                         <div th:if="${recentTransactions == null or recentTransactions.empty}"
-                            class="text-center muted-text">
-                            <p>No recent transactions found.</p>
+                            class="text-center muted-text p-2">
+                            <i class="fas fa-history font-size-2 opacity-0-5 mb-1"></i>
+                            <p class="m-0">No recent transactions found.</p>
                         </div>
 
                         <div th:if="${recentTransactions != null and !recentTransactions.empty}"
                             class="table-responsive">
-                            <table class="data-table" style="font-size: 0.9rem;">
+                            <table class="data-table font-size-0-9">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
@@ -138,7 +143,7 @@
                                             <span th:text="${trx.type}" class="badge"
                                                 th:classappend="${trx.type == 'add to wallet' ? 'success' : 'info'}">TYPE</span>
                                         </td>
-                                        <td style="font-weight: 600;"
+                                        <td class="font-weight-600"
                                             th:classappend="${trx.sender == user.account or trx.sender == user.mobile} ? 'text-danger' : 'text-success'">
                                             <span
                                                 th:text="${trx.sender == user.account or trx.sender == user.mobile} ? '-' : '+'"></span>
@@ -148,41 +153,40 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="text-center" style="margin-top: 1rem;">
-                            <a href="/history" style="font-size: 0.9rem; font-weight: 500;">View
-                                Full History</a>
-                        </div>
                     </div>
 
-                    <!-- Quick Actions (Refactored) -->
+
                     <div class="quick-actions-column">
-                        <div class="section-card quick-access-card">
-                            <h3 class="mt-0" style="color: #1565c0;">Quick Access</h3>
-                            <div style="display: grid; gap: 0.8rem;">
-                                <div class="action-card quick-action-item" onclick="window.location.href='/add-money'">
-                                    <div class="quick-action-icon">
+                        <div class="section-card quick-access-card h-100">
+                            <h3 class="m-0 mb-1" style="color: #1565c0;">Quick Access</h3>
+                            <div class="d-grid gap-1">
+                                <div class="action-card quick-action-item cursor-pointer hover-bg-light transition-bg"
+                                    onclick="window.location.href='/add-money'">
+                                    <div class="quick-action-icon bg-light">
                                         <i class="fas fa-plus-circle action-icon-success"></i>
                                     </div>
                                     <span class="font-weight-600">Add Money</span>
                                 </div>
 
-                                <div class="action-card quick-action-item" onclick="window.location.href='/recharge'">
-                                    <div class="quick-action-icon">
+                                <div class="action-card quick-action-item cursor-pointer hover-bg-light transition-bg"
+                                    onclick="window.location.href='/recharge'">
+                                    <div class="quick-action-icon bg-light">
                                         <i class="fas fa-mobile-alt action-icon-blue"></i>
                                     </div>
                                     <span class="font-weight-600">Mobile Recharge</span>
                                 </div>
 
-                                <div class="action-card quick-action-item"
+                                <div class="action-card quick-action-item cursor-pointer hover-bg-light transition-bg"
                                     onclick="window.location.href='/user-profile'">
-                                    <div class="quick-action-icon">
+                                    <div class="quick-action-icon bg-light">
                                         <i class="fas fa-user-circle action-icon-primary"></i>
                                     </div>
                                     <span class="font-weight-600">My Profile</span>
                                 </div>
 
-                                <div class="action-card quick-action-item" onclick="window.location.href='/chequebook'">
-                                    <div class="quick-action-icon">
+                                <div class="action-card quick-action-item cursor-pointer hover-bg-light transition-bg"
+                                    onclick="window.location.href='/chequebook'">
+                                    <div class="quick-action-icon bg-light">
                                         <i class="fas fa-money-check action-icon-purple"></i>
                                     </div>
                                     <span class="font-weight-600">Cheque Book</span>

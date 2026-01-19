@@ -40,7 +40,6 @@ public class RegistrationController {
             @RequestParam("password") String password,
             RedirectAttributes redirectAttributes) {
 
-        
         boolean check = true;
 
         if (name == null || name.isEmpty()) {
@@ -84,38 +83,63 @@ public class RegistrationController {
             }
         }
 
-        
         if (check) {
-            User user = new User(name, mobile, email, password, dobString, account, nid);
+            // STRICT VERIFICATION LOGIC
+            // 1. Check if the bank account exists
+            User existingUser = userService.getUserByAccount(account);
 
-            boolean haveAccount = userService.checkAccount(account);
-
-            if (haveAccount) {
-                boolean exist = UserService.existingAccount(mobile, account, mongoTemplate);
-
-                if (!exist) {
-                    boolean isRegistered = userService.registration(user);
-
-                    if (isRegistered) {
-                        UserService.createOnlineBankingAccount(account, mobile, 0, mongoTemplate);
-                        redirectAttributes.addFlashAttribute("successMessage",
-                                "Registration Done. Proceeding To Login");
-                        return "redirect:/login";
-                    } else {
-                        redirectAttributes.addFlashAttribute("errorMessage", "Error");
-                        return "redirect:/register";
-                    }
-                } else {
-                    redirectAttributes.addFlashAttribute("errorMessage", "Account Already Exist");
-                    return "redirect:/register";
-                }
-            } else {
-                redirectAttributes.addFlashAttribute("errorMessage",
-                        "You Have No Account In The Bank");
+            if (existingUser == null) {
+                redirectAttributes.addFlashAttribute("errorMessage", "Bank Account Not Found. Please contact branch.");
                 return "redirect:/register";
             }
+
+            // 2. Verify Identity (Name, Mobile, NID, DOB)
+            boolean identityMatched = true;
+
+            if (!existingUser.getMobile().equals(mobile))
+                identityMatched = false;
+            if (!existingUser.getNid().equals(nid))
+                identityMatched = false;
+            // Simple Name Check (Case insensitive)
+            if (!existingUser.getName().equalsIgnoreCase(name))
+                identityMatched = false;
+            // DOB Check
+            if (existingUser.getDOB() != null && !existingUser.getDOB().equals(dobString))
+                identityMatched = false;
+
+            if (!identityMatched) {
+                redirectAttributes.addFlashAttribute("errorMessage",
+                        "Verification Failed: Details do not match our bank records.");
+                return "redirect:/register";
+            }
+
+            // 3. Update User credentials (Email & Password) & Activate
+            User userUpdate = new User();
+            userUpdate.setAccount(account);
+            userUpdate.setName(existingUser.getName()); // Keep original name
+            userUpdate.setMobile(existingUser.getMobile());
+            userUpdate.setNid(existingUser.getNid());
+            userUpdate.setDOB(existingUser.getDOB());
+            userUpdate.setEmail(email); // Update Email
+            userUpdate.setPassword(password); // Update Password
+
+            boolean isRegistered = userService.registration(userUpdate);
+
+            if (isRegistered) {
+                // Ensure wallet balance is initialized if not present (logic inside
+                // registration/createOnlineBankingAccount)
+                UserService.createOnlineBankingAccount(account, mobile,
+                        existingUser.getWalletBalance() != null ? existingUser.getWalletBalance() : 0.0, mongoTemplate);
+
+                redirectAttributes.addFlashAttribute("successMessage", "Registration Successful! You can now login.");
+                return "redirect:/login";
+            } else {
+                redirectAttributes.addFlashAttribute("errorMessage", "System Error during registration.");
+                return "redirect:/register";
+            }
+
         } else {
-            redirectAttributes.addFlashAttribute("errorMessage", "Please fill all fields correctly");
+            redirectAttributes.addFlashAttribute("errorMessage", "Please fill all fields correctly.");
             return "redirect:/register";
         }
     }

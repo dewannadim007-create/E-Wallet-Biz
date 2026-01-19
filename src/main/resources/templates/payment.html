@@ -33,8 +33,14 @@
                 <li><a th:href="@{/home/to-statement}">
                         <i class="fas fa-file-invoice-dollar"></i> <span>Statement</span>
                     </a></li>
+                <li><a th:href="@{/home/to-history}">
+                        <i class="fas fa-history"></i> <span>Transaction History</span>
+                    </a></li>
                 <li><a th:href="@{/home/to-menu}">
                         <i class="fas fa-cog"></i> <span>Settings</span>
+                    </a></li>
+                <li><a th:href="@{/chequebook}">
+                        <i class="fas fa-money-check"></i> <span>Cheque Book</span>
                     </a></li>
                 <li><a th:href="@{/logout}" style="color: var(--danger);">
                         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
@@ -64,8 +70,7 @@
                 </div>
 
                 <div class="user-actions">
-                    <button class="icon-btn" onclick="window.location.href='/notifications'"><i
-                            class="fas fa-bell"></i></button>
+
                     <button id="themeToggle" class="icon-btn" title="Toggle Theme"><i class="fas fa-moon"></i></button>
                     <div class="user-profile" onclick="window.location.href='/user-profile'">
                         <div class="avatar"
@@ -82,20 +87,21 @@
             <section class="page-content">
 
 
-                <div class="auth-card auth-card-wide">
-                    <div class="text-center mb-2">
+                <div class="section-card centered-form-card">
+                    <div class="form-icon-header text-center mb-1">
                         <i class="fas fa-bolt fa-3x" style="color: #f1c40f;"></i>
-                        <h3 class="mt-1">Electricity Bill</h3>
+                        <h3 class="mt-0-5">Electricity Bill</h3>
                     </div>
 
-                    <div class="section-card payment-balance-card">
-                        <span class="balance-label">Available Wallet Balance:</span>
-                        <span class="balance-value"
+                    <div class="balance-available-bar mb-1half text-center p-1 bg-light rounded">
+                        <span class="font-weight-500 muted-text d-block">Available Wallet Balance</span>
+                        <span class="text-primary font-weight-bold font-size-1-2"
                             th:text="${availableBalance != null ? '৳ ' + availableBalance : '---'}">৳ 0.00</span>
                     </div>
 
-                    <form action="/api/payment/proceed" method="post">
-                        <div class="form-grid-2">
+                    <form action="/api/payment/proceed" method="post" class="card-grid"
+                        style="--columns:2; gap:1.5rem;">
+                        <div class="grid-2" style="grid-column: span 2;">
                             <div class="form-group">
                                 <label>Provider</label>
                                 <select name="provider" class="form-control" required>
@@ -114,48 +120,60 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="grid-column: span 2;">
                             <label>Customer Account Number</label>
-                            <input type="text" name="account" class="form-control" placeholder="Customer Account No"
-                                required>
+                            <div class="input-group mb-0">
+                                <span class="input-group-text"><i class="fas fa-file-invoice"></i></span>
+                                <input type="text" name="account" class="form-control" placeholder="Customer Account No"
+                                    required>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label>Amount (Tk)</label>
-                            <div class="amount-badges">
-                                <span class="amount-badge"
+                            <div class="amount-badges mb-0-5">
+                                <span class="badge cursor-pointer"
                                     onclick="document.getElementById('amountInput').value='500'">500</span>
-                                <span class="amount-badge"
+                                <span class="badge cursor-pointer"
                                     onclick="document.getElementById('amountInput').value='1000'">1000</span>
-                                <span class="amount-badge"
+                                <span class="badge cursor-pointer"
                                     onclick="document.getElementById('amountInput').value='1200'">1200</span>
                             </div>
-                            <input type="number" id="amountInput" name="amount" class="form-control" placeholder="0.00"
-                                required>
+                            <div class="input-group mb-0">
+                                <span class="input-group-text">৳</span>
+                                <input type="number" id="amountInput" name="amount" class="form-control"
+                                    placeholder="0.00" required>
+                            </div>
                         </div>
 
                         <div class="form-group">
                             <label>Confirm Password</label>
-                            <input type="password" name="password" class="form-control" required>
+                            <div style="height: 31px;"></div> <!-- Spacer to align with badges -->
+                            <div class="input-group mb-0">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" name="password" class="form-control" required
+                                    placeholder="Enter password">
+                            </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100">
-                            Pay Bill <i class="fas fa-arrow-right"></i>
-                        </button>
+                        <div style="grid-column: span 2;">
+                            <button type="submit" class="btn btn-primary w-100">
+                                Pay Bill <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
                     </form>
 
-                    <div class="section-card status-card-success" th:if="${successMessage}">
-                        <i class="fas fa-check-circle card-icon-success"></i>
-                        <p class="m-0" style="margin-top: 0.25rem !important;" th:text="${successMessage}">Success</p>
+                    <div class="section-card badge-success-solid mt-2 text-center" th:if="${successMessage}">
+                        <i class="fas fa-check-circle mr-1"></i>
+                        <span th:text="${successMessage}">Success</span>
                     </div>
-                    <div class="section-card status-card-error" th:if="${errorMessage}">
-                        <i class="fas fa-exclamation-circle card-icon-error"></i>
-                        <p class="m-0" style="margin-top: 0.25rem !important;" th:text="${errorMessage}">Error</p>
+                    <div class="section-card badge-danger-solid mt-2 text-center" th:if="${errorMessage}">
+                        <i class="fas fa-exclamation-circle mr-1"></i>
+                        <span th:text="${errorMessage}">Error</span>
                     </div>
 
                     <div class="text-center mt-2">
-                        <a href="/home/to-utility" class="muted-text" style="font-size: 0.9rem;">Back to
-                            Utilities</a>
+                        <a href="/home/to-utility" class="muted-text font-size-0-9">Back to Utilities</a>
                     </div>
                 </div>
             </section>

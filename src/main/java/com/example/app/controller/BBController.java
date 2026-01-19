@@ -43,6 +43,11 @@ public class BBController {
         }
 
         model.addAttribute("user", loggedUser);
+
+        // Add available balance (Bank)
+        double availableBalance = UserService.getBalanceAccount(loggedUser.getAccount(), mongoTemplate);
+        model.addAttribute("availableBalance", availableBalance);
+
         return "bb";
     }
 
@@ -62,7 +67,6 @@ public class BBController {
             return "redirect:/login";
         }
 
-        
         boolean haveAccount = userService.checkAccount(receiverAccount);
         double senderBalance = UserService.getBalanceAccount(loggedUser.getAccount(), mongoTemplate);
         double remainingBalance = senderBalance - amount - 1000;
