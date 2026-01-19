@@ -85,8 +85,8 @@
             <section class="page-content">
 
 
-                <div class="actions-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-                    <div class="balance-card" style="margin:0; background: linear-gradient(135deg, #004d40, #00695c);">
+                <div class="actions-grid ebanking-grid">
+                    <div class="balance-card wallet-card-gradient">
                         <div class="balance-info">
                             <h3><i class="fas fa-wallet"></i> Digital Wallet</h3>
                             <div class="amount"
@@ -97,7 +97,7 @@
                         </div>
                     </div>
 
-                    <div class="balance-card" style="margin:0; background: linear-gradient(135deg, #34495e, #2c3e50);">
+                    <div class="balance-card bank-card-gradient">
                         <div class="balance-info">
                             <h3><i class="fas fa-university"></i> Linked Bank Account</h3>
                             <div class="amount" th:text="${bankBalance != null ? '৳ ' + bankBalance : 'Tap to Update'}">
@@ -109,14 +109,13 @@
                     </div>
                 </div>
 
-                <div class="section-card" style="margin-top: 2rem;">
-                    <h3 style="margin-top: 0; color: var(--primary-color);">Actions</h3>
-                    <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                <div class="section-card mt-2">
+                    <h3 class="mt-0" style="color: var(--primary-color);">Actions</h3>
+                    <div class="d-flex gap-1" style="flex-wrap: wrap;">
                         <a href="/ebanking/add-money" class="btn btn-primary">
                             <i class="fas fa-plus-circle"></i> Add Money to Wallet
                         </a>
-                        <a href="/home/to-send-money" class="btn btn-primary"
-                            style="background-color: var(--accent-color); color: var(--primary-color);">
+                        <a href="/home/to-send-money" class="btn btn-primary action-btn-accent">
                             <i class="fas fa-paper-plane"></i> Transfer Funds
                         </a>
                     </div>

@@ -82,22 +82,21 @@
             <section class="page-content">
 
 
-                <div class="auth-card" style="max-width: 600px; margin: 0 auto; box-shadow: var(--shadow-md);">
+                <div class="auth-card auth-card-wide">
                     <div class="text-center mb-2">
                         <i class="fas fa-bolt fa-3x" style="color: #f1c40f;"></i>
-                        <h3 style="margin-top: 10px;">Electricity Bill</h3>
+                        <h3 class="mt-1">Electricity Bill</h3>
                     </div>
 
-                    <div class="section-card"
-                        style="background: #f8f9fa; display: flex; justify-content: space-between; margin-bottom: 1rem; align-items: center;">
-                        <span style="font-weight: 500; color: #555;">Available Wallet Balance:</span>
-                        <span style="font-weight: bold; color: var(--primary-color); font-size: 1.1rem;"
+                    <div class="section-card payment-balance-card">
+                        <span class="balance-label">Available Wallet Balance:</span>
+                        <span class="balance-value"
                             th:text="${availableBalance != null ? '৳ ' + availableBalance : '---'}">৳ 0.00</span>
                     </div>
 
                     <form action="/api/payment/proceed" method="post">
-                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                            <div class="form-group" style="flex: 1; min-width: 220px;">
+                        <div class="form-grid-2">
+                            <div class="form-group">
                                 <label>Provider</label>
                                 <select name="provider" class="form-control" required>
                                     <option value="">Select Provider</option>
@@ -105,7 +104,7 @@
                                     <option value="DPDC">DPDC</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="flex: 1; min-width: 220px;">
+                            <div class="form-group">
                                 <label>Type</label>
                                 <select name="type" class="form-control" required>
                                     <option value="">Select Type</option>
@@ -123,13 +122,13 @@
 
                         <div class="form-group">
                             <label>Amount (Tk)</label>
-                            <div style="display: flex; gap: 10px; margin-bottom: 5px;">
-                                <span class="badge" onclick="document.getElementById('amountInput').value='500'"
-                                    style="cursor: pointer;">500</span>
-                                <span class="badge" onclick="document.getElementById('amountInput').value='1000'"
-                                    style="cursor: pointer;">1000</span>
-                                <span class="badge" onclick="document.getElementById('amountInput').value='1200'"
-                                    style="cursor: pointer;">1200</span>
+                            <div class="amount-badges">
+                                <span class="amount-badge"
+                                    onclick="document.getElementById('amountInput').value='500'">500</span>
+                                <span class="amount-badge"
+                                    onclick="document.getElementById('amountInput').value='1000'">1000</span>
+                                <span class="amount-badge"
+                                    onclick="document.getElementById('amountInput').value='1200'">1200</span>
                             </div>
                             <input type="number" id="amountInput" name="amount" class="form-control" placeholder="0.00"
                                 required>
@@ -140,24 +139,22 @@
                             <input type="password" name="password" class="form-control" required>
                         </div>
 
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <button type="submit" class="btn btn-primary w-100">
                             Pay Bill <i class="fas fa-arrow-right"></i>
                         </button>
                     </form>
 
-                    <div class="section-card" th:if="${successMessage}"
-                        style="margin-top:1rem; background:#e8f5e9; text-align:center;">
-                        <i class="fas fa-check-circle" style="color: #2e7d32;"></i>
-                        <p style="margin:0.25rem 0 0 0; color: #1b5e20;" th:text="${successMessage}">Success</p>
+                    <div class="section-card status-card-success" th:if="${successMessage}">
+                        <i class="fas fa-check-circle card-icon-success"></i>
+                        <p class="m-0" style="margin-top: 0.25rem !important;" th:text="${successMessage}">Success</p>
                     </div>
-                    <div class="section-card" th:if="${errorMessage}"
-                        style="margin-top:1rem; background:#fbe9e7; text-align:center;">
-                        <i class="fas fa-exclamation-circle" style="color: #c62828;"></i>
-                        <p style="margin:0.25rem 0 0 0; color: #b71c1c;" th:text="${errorMessage}">Error</p>
+                    <div class="section-card status-card-error" th:if="${errorMessage}">
+                        <i class="fas fa-exclamation-circle card-icon-error"></i>
+                        <p class="m-0" style="margin-top: 0.25rem !important;" th:text="${errorMessage}">Error</p>
                     </div>
 
                     <div class="text-center mt-2">
-                        <a href="/home/to-utility" style="color: var(--text-secondary); font-size: 0.9rem;">Back to
+                        <a href="/home/to-utility" class="muted-text" style="font-size: 0.9rem;">Back to
                             Utilities</a>
                     </div>
                 </div>
