@@ -34,7 +34,7 @@ If you don't have a MongoDB instance:
 2. **Configure Environment Variables**
    - After the blueprint is created, go to your web service settings
    - Add the environment variable:
-     - `MONGODB_URI`: Your MongoDB connection string
+     - `MONGO_URI`: Your MongoDB connection string
    - Example: `mongodb+srv://username:password@cluster.mongodb.net/mobile-banking`
 
 3. **Deploy**
@@ -55,7 +55,7 @@ If you don't have a MongoDB instance:
 
 2. **Environment Variables**
    Add these in the "Environment" section:
-   - `MONGODB_URI`: Your MongoDB connection string
+   - `MONGO_URI`: Your MongoDB connection string
    - `JAVA_OPTS`: `-Xmx512m -Xms256m` (optional, for memory tuning)
    - `SPRING_PROFILES_ACTIVE`: `prod` (optional)
 
@@ -78,7 +78,7 @@ If you don't have a MongoDB instance:
 
 | Variable | Required | Description | Example |
 |----------|----------|-------------|---------|
-| `MONGODB_URI` | Yes | MongoDB connection string | `mongodb+srv://user:pass@cluster.mongodb.net/dbname` |
+| `MONGO_URI` | Yes | MongoDB connection string | `mongodb+srv://user:pass@cluster.mongodb.net/dbname` |
 | `PORT` | No | Application port (auto-set by Render) | `8080` |
 | `JAVA_OPTS` | No | JVM options for tuning | `-Xmx512m -Xms256m` |
 | `SPRING_PROFILES_ACTIVE` | No | Spring profile to activate | `prod` |
@@ -89,7 +89,7 @@ If you don't have a MongoDB instance:
 - **Never commit your MongoDB credentials** to the repository
 - Always use environment variables for sensitive data
 - The current `application.properties` has a fallback connection string for local development only
-- In production, always set `MONGODB_URI` environment variable
+- In production, always set `MONGO_URI` environment variable
 
 ### MongoDB Connection String Format
 ```
@@ -110,7 +110,7 @@ mongodb+srv://<username>:<password>@<cluster-hostname>.mongodb.net/<database>?re
 
 **Application doesn't start:**
 - Check the logs in Render dashboard
-- Verify `MONGODB_URI` is set correctly
+- Verify `MONGO_URI` is set correctly
 - Ensure MongoDB cluster allows connections from all IPs (0.0.0.0/0)
 
 **Health check fails:**
@@ -128,7 +128,7 @@ docker build -t e-wallet-biz .
 
 # Run with environment variables
 docker run -p 8080:8080 \
-  -e MONGODB_URI="your_mongodb_connection_string" \
+  -e MONGO_URI="your_mongodb_connection_string" \
   e-wallet-biz
 
 # Test the application

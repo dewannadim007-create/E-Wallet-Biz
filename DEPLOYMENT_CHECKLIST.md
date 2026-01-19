@@ -30,7 +30,7 @@ Use this checklist to ensure you complete all steps for deploying to Render.
 - [ ] Navigate to your web service settings
 - [ ] Click "Environment" tab
 - [ ] Add environment variable:
-  - Key: `MONGODB_URI`
+  - Key: `MONGO_URI`
   - Value: `mongodb+srv://username:password@cluster.mongodb.net/mobile-banking`
 - [ ] Click "Save Changes"
 
@@ -72,7 +72,7 @@ If you encounter issues:
 - [ ] Check Java 17 compatibility
 
 ### Application Won't Start
-- [ ] Verify MONGODB_URI is set correctly
+- [ ] Verify MONGO_URI is set correctly
 - [ ] Check MongoDB network access settings
 - [ ] Review Render application logs
 - [ ] Verify port configuration

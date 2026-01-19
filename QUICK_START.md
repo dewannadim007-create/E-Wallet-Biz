@@ -28,7 +28,7 @@
 ```
 In Render dashboard:
 - Go to your service → Environment
-- Add: MONGODB_URI = <your-mongodb-connection-string>
+- Add: MONGO_URI = <your-mongodb-connection-string>
 - Save
 ```
 
@@ -52,7 +52,7 @@ Render automatically:
 - Verify Java 17 compatibility
 
 **App won't start?**
-- Verify MONGODB_URI is set correctly
+- Verify MONGO_URI is set correctly
 - Check MongoDB allows connections from 0.0.0.0/0
 - Review application logs in Render
 
