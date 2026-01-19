@@ -53,6 +53,3 @@ application-prod.properties
 .env
 .env.local
 .env.production
-
-# Docker
-.dockerignore

@@ -15,7 +15,10 @@ If you don't have a MongoDB instance:
 1. Go to [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
 2. Create a free cluster
 3. Create a database user with password
-4. Whitelist all IP addresses (0.0.0.0/0) for Render access
+4. Configure network access:
+   - For Render deployments, you may need to allow access from all IPs (0.0.0.0/0) as Render uses dynamic IPs
+   - **Security Note**: This allows connections from any IP. For production, consider using MongoDB Atlas's VPC peering or PrivateLink for enhanced security
+   - Alternatively, regularly update the whitelist with Render's IP ranges (contact Render support for current ranges)
 5. Get your connection string (it will look like: `mongodb+srv://<username>:<password>@cluster.mongodb.net/<database>`)
 
 ## Step 2: Deploy to Render
