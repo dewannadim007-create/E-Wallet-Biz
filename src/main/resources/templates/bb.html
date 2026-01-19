@@ -80,11 +80,10 @@
 
             <!-- PAGE CONTENT -->
             <section class="page-content">
-                <div class="section-card" style="max-width: 720px; margin: 0 auto;">
+                <div class="section-card transaction-card">
 
-
-                    <form action="/api/bb-transfer" method="post" class="card-grid"
-                        style="--columns:1; max-width:520px; margin:0 auto;">
+                    <form action="/api/bb-transfer" method="post" class="card-grid centered-form-card"
+                        style="--columns:1;">
                         <div class="form-group">
                             <label>Receiver Account No</label>
                             <div class="input-group">
@@ -112,21 +111,21 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <button type="submit" class="btn btn-primary w-100">
                             Transfer Funds <i class="fas fa-arrow-right"></i>
                         </button>
                     </form>
 
-                    <div class="section-card" th:if="${successMessage}" style="margin-top:1rem; background:#e8f5e9;">
-                        <span class="badge" style="background:#2e7d32; color:#fff;">Success</span>
-                        <p style="margin:0.25rem 0 0 0;" th:text="${successMessage}">Transfer completed</p>
+                    <div class="section-card alert-success" th:if="${successMessage}">
+                        <span class="badge badge-success-solid">Success</span>
+                        <p class="m-0 mt-1" th:text="${successMessage}">Transfer completed</p>
                     </div>
-                    <div class="section-card" th:if="${errorMessage}" style="margin-top:1rem; background:#fbe9e7;">
-                        <span class="badge" style="background:#c62828; color:#fff;">Error</span>
-                        <p style="margin:0.25rem 0 0 0;" th:text="${errorMessage}">There was a problem</p>
+                    <div class="section-card alert-error" th:if="${errorMessage}">
+                        <span class="badge badge-danger-solid">Error</span>
+                        <p class="m-0 mt-1" th:text="${errorMessage}">There was a problem</p>
                     </div>
 
-                    <div class="text-center" style="margin-top:1rem;">
+                    <div class="text-center mt-1">
                         <a href="/ebanking" class="muted-text">Back to E-Banking</a>
                     </div>
                 </div>

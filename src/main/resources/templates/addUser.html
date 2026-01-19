@@ -33,6 +33,12 @@
                 <li><a th:href="@{/admin/cheque-status}">
                         <i class="fas fa-money-check"></i> <span>Cheque Books</span>
                     </a></li>
+                <li><a th:href="@{/admin/branches}">
+                        <i class="fas fa-map-marker-alt"></i> <span>Locations</span>
+                    </a></li>
+                <li><a th:href="@{/admin/analytics}">
+                        <i class="fas fa-chart-line"></i> <span>Financial Reports</span>
+                    </a></li>
                 <li><a th:href="@{/admin/logout}" style="color: var(--danger);">
                         <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
                     </a></li>
@@ -74,10 +80,10 @@
             <section class="page-content">
 
 
-                <div class="section-card" style="max-width: 900px; margin: 0 auto;">
+                <div class="section-card centered-form-card" style="max-width: 900px;">
                     <div class="text-center mb-2">
-                        <div class="badge badge-pill" style="margin-bottom: 0.5rem;">New registration</div>
-                        <h3 style="margin:0;">User details</h3>
+                        <div class="badge badge-info mb-1half">New registration</div>
+                        <h3 class="m-0">User details</h3>
                     </div>
 
                     <form id="addUserForm" action="/admin/api/add-user" method="post" class="card-grid"
@@ -120,20 +126,20 @@
                         </div>
                     </form>
 
-                    <div style="margin-top: 1rem; display:flex; gap: 0.75rem;">
-                        <button type="submit" form="addUserForm" class="btn btn-primary" style="flex:1;">
+                    <div class="d-flex gap-1 mt-1">
+                        <button type="submit" form="addUserForm" class="btn btn-primary flex-1">
                             <i class="fas fa-plus-circle"></i> Create User
                         </button>
                         <a href="/admin/home" class="btn btn-secondary">Cancel</a>
                     </div>
 
-                    <div class="section-card" th:if="${successMessage}" style="margin-top:1rem; background: #e8f5e9;">
-                        <span class="badge" style="background: #2e7d32; color: #fff;">Success</span>
-                        <p style="margin:0.25rem 0 0 0;" th:text="${successMessage}">User created</p>
+                    <div class="section-card alert-success" th:if="${successMessage}">
+                        <span class="badge badge-success-solid">Success</span>
+                        <p class="m-0 mt-1" th:text="${successMessage}">User created</p>
                     </div>
-                    <div class="section-card" th:if="${errorMessage}" style="margin-top:1rem; background: #fbe9e7;">
-                        <span class="badge" style="background: #c62828; color: #fff;">Error</span>
-                        <p style="margin:0.25rem 0 0 0;" th:text="${errorMessage}">Issue creating user</p>
+                    <div class="section-card alert-error" th:if="${errorMessage}">
+                        <span class="badge badge-danger-solid">Error</span>
+                        <p class="m-0 mt-1" th:text="${errorMessage}">Issue creating user</p>
                     </div>
                 </div>
             </section>

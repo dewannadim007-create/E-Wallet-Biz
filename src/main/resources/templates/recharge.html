@@ -82,22 +82,21 @@
             <section class="page-content">
 
 
-                <div class="auth-card" style="max-width: 600px; margin: 0 auto; box-shadow: var(--shadow-md);">
-                    <div class="text-center mb-2">
+                <div class="auth-card centered-form-card" style="box-shadow: var(--shadow-md);">
+                    <div class="form-icon-header">
                         <i class="fas fa-mobile-alt fa-3x" style="color: #2980b9;"></i>
-                        <h3 style="margin-top: 10px;">Mobile Top-up</h3>
+                        <h3 class="mt-1">Mobile Top-up</h3>
                     </div>
 
-                    <div class="section-card"
-                        style="background: #f8f9fa; display: flex; justify-content: space-between; margin-bottom: 1rem; align-items: center;">
-                        <span style="font-weight: 500; color: #555;">Available Wallet Balance:</span>
-                        <span style="font-weight: bold; color: var(--primary-color); font-size: 1.1rem;"
+                    <div class="balance-available-bar">
+                        <span class="font-weight-500 muted-text">Available Wallet Balance:</span>
+                        <span class="text-primary font-weight-bold font-size-1-1"
                             th:text="${availableBalance != null ? '৳ ' + availableBalance : '---'}">৳ 0.00</span>
                     </div>
 
                     <form action="/api/recharge/proceed" method="post">
-                        <div style="display: flex; gap: 15px; flex-wrap: wrap;">
-                            <div class="form-group" style="flex: 1; min-width: 220px;">
+                        <div class="d-flex gap-1 flex-wrap">
+                            <div class="form-group flex-1 min-w-200">
                                 <label>Operator</label>
                                 <select name="operator" class="form-control" required>
                                     <option value="">Select Operator</option>
@@ -108,7 +107,7 @@
                                     <option value="Teletalk">Teletalk</option>
                                 </select>
                             </div>
-                            <div class="form-group" style="flex: 1; min-width: 220px;">
+                            <div class="form-group flex-1 min-w-200">
                                 <label>Type</label>
                                 <select name="type" class="form-control" required>
                                     <option value="">Select Type</option>
@@ -125,15 +124,15 @@
 
                         <div class="form-group">
                             <label>Amount (Tk)</label>
-                            <div style="display: flex; gap: 10px; margin-bottom: 5px; flex-wrap: wrap;">
-                                <span class="badge" onclick="document.getElementById('amountInput').value='20'"
-                                    style="cursor: pointer;">20</span>
-                                <span class="badge" onclick="document.getElementById('amountInput').value='50'"
-                                    style="cursor: pointer;">50</span>
-                                <span class="badge" onclick="document.getElementById('amountInput').value='100'"
-                                    style="cursor: pointer;">100</span>
-                                <span class="badge" onclick="document.getElementById('amountInput').value='500'"
-                                    style="cursor: pointer;">500</span>
+                            <div class="recharge-badge-group">
+                                <span class="recharge-badge"
+                                    onclick="document.getElementById('amountInput').value='20'">20</span>
+                                <span class="recharge-badge"
+                                    onclick="document.getElementById('amountInput').value='50'">50</span>
+                                <span class="recharge-badge"
+                                    onclick="document.getElementById('amountInput').value='100'">100</span>
+                                <span class="recharge-badge"
+                                    onclick="document.getElementById('amountInput').value='500'">500</span>
                             </div>
                             <input type="number" id="amountInput" name="amount" class="form-control" placeholder="0.00"
                                 required>
@@ -144,24 +143,22 @@
                             <input type="password" name="password" class="form-control" required>
                         </div>
 
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <button type="submit" class="btn btn-primary w-100">
                             Recharge Now <i class="fas fa-arrow-right"></i>
                         </button>
                     </form>
 
-                    <div class="section-card" th:if="${successMessage}"
-                        style="margin-top:1rem; background:#e8f5e9; text-align:center;">
-                        <i class="fas fa-check-circle" style="color: #2e7d32;"></i>
-                        <p style="margin:0.25rem 0 0 0; color: #1b5e20;" th:text="${successMessage}">Success</p>
+                    <div class="section-card alert-success text-center" th:if="${successMessage}">
+                        <i class="fas fa-check-circle"></i>
+                        <p class="m-0 mt-1" th:text="${successMessage}">Success</p>
                     </div>
-                    <div class="section-card" th:if="${errorMessage}"
-                        style="margin-top:1rem; background:#fbe9e7; text-align:center;">
-                        <i class="fas fa-exclamation-circle" style="color: #c62828;"></i>
-                        <p style="margin:0.25rem 0 0 0; color: #b71c1c;" th:text="${errorMessage}">Error</p>
+                    <div class="section-card alert-error text-center" th:if="${errorMessage}">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <p class="m-0 mt-1" th:text="${errorMessage}">Error</p>
                     </div>
 
                     <div class="text-center mt-2">
-                        <a href="/home/to-utility" style="color: var(--text-secondary); font-size: 0.9rem;">Back to
+                        <a href="/home/to-utility" class="muted-text font-size-0-9">Back to
                             Utilities</a>
                     </div>
                 </div>

@@ -81,27 +81,20 @@
 
             <!-- PAGE CONTENT -->
             <section class="page-content">
-                <div class="grid-2"
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto;">
+                <div class="profile-container">
 
                     <!-- Identity Card -->
-                    <div class="section-card"
-                        style="text-align: center; padding: 2.5rem; position: relative; overflow: hidden;">
-                        <div
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 6px; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));">
+                    <div class="section-card profile-card">
+                        <div class="profile-top-decoration"></div>
+
+                        <div class="profile-avatar-large">
+                            <i class="fas fa-user"></i>
                         </div>
 
-                        <div
-                            style="width: 120px; height: 120px; margin: 0 auto 1.5rem; border-radius: 50%; background: linear-gradient(135deg, #e0f2f1, #b2dfdb); display: flex; align-items: center; justify-content: center; border: 4px solid white; box-shadow: var(--shadow-md);">
-                            <i class="fas fa-user" style="font-size: 3.5rem; color: var(--primary-color);"></i>
-                        </div>
+                        <h2 class="profile-name" th:text="${name}">User Name</h2>
+                        <p class="profile-email" th:text="${email}">user@example.com</p>
 
-                        <h2 style="margin: 0; color: var(--text-primary); font-family: var(--heading-font);"
-                            th:text="${name}">User Name</h2>
-                        <p style="color: var(--text-secondary); margin: 0.5rem 0 1.5rem;" th:text="${email}">
-                            user@example.com</p>
-
-                        <div style="display: flex; gap: 10px; justify-content: center;">
+                        <div class="d-flex justify-center gap-1">
                             <a href="/change-password" class="btn btn-secondary"><i class="fas fa-key"></i> Change
                                 Password</a>
                         </div>
@@ -109,50 +102,36 @@
 
                     <!-- Personal Details -->
                     <div class="section-card">
-                        <h3
-                            style="margin-top: 0; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem; margin-bottom: 1.5rem;">
-                            Personal Details</h3>
+                        <h3 class="section-title border-bottom pb-1 mb-1half">Personal Details</h3>
 
-                        <div style="display: grid; gap: 1.5rem;">
-                            <div style="display: flex; flex-direction: column;">
-                                <label
-                                    style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; text-transform: uppercase;">Mobile
-                                    Number</label>
-                                <div
-                                    style="display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600;">
-                                    <i class="fas fa-mobile-alt" style="color: var(--primary-color);"></i>
+                        <div class="grid-gap-1half">
+                            <div class="detail-group">
+                                <label class="detail-label-sm">Mobile Number</label>
+                                <div class="detail-value-lg">
+                                    <i class="fas fa-mobile-alt detail-icon"></i>
                                     <span th:text="${mobile}">01700000000</span>
                                 </div>
                             </div>
 
-                            <div style="display: flex; flex-direction: column;">
-                                <label
-                                    style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; text-transform: uppercase;">Account
-                                    Number</label>
-                                <div
-                                    style="display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600;">
-                                    <i class="fas fa-university" style="color: var(--primary-color);"></i>
+                            <div class="detail-group">
+                                <label class="detail-label-sm">Account Number</label>
+                                <div class="detail-value-lg">
+                                    <i class="fas fa-university detail-icon"></i>
                                     <span th:text="${account}">1234567890</span>
                                 </div>
                             </div>
 
-                            <div style="display: flex; flex-direction: column;">
-                                <label
-                                    style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; text-transform: uppercase;">National
-                                    ID (NID)</label>
-                                <div
-                                    style="display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600;">
-                                    <i class="fas fa-id-card" style="color: var(--primary-color);"></i>
+                            <div class="detail-group">
+                                <label class="detail-label-sm">National ID (NID)</label>
+                                <div class="detail-value-lg">
+                                    <i class="fas fa-id-card detail-icon"></i>
                                     <span th:text="${nid}">1234567890123</span>
                                 </div>
                             </div>
-                            <div style="display: flex; flex-direction: column;">
-                                <label
-                                    style="font-size: 0.85rem; color: var(--text-secondary); font-weight: 500; text-transform: uppercase;">Date
-                                    of Birth</label>
-                                <div
-                                    style="display: flex; align-items: center; gap: 10px; font-size: 1.1rem; font-weight: 600;">
-                                    <i class="fas fa-birthday-cake" style="color: var(--primary-color);"></i>
+                            <div class="detail-group">
+                                <label class="detail-label-sm">Date of Birth</label>
+                                <div class="detail-value-lg">
+                                    <i class="fas fa-birthday-cake detail-icon"></i>
                                     <span th:text="${dob}">01-01-1990</span>
                                 </div>
                             </div>
